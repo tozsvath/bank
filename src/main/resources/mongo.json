@@ -1,0 +1,20 @@
+[
+  {
+    "_class": "mentoring.epam.bank.domain.Balance",
+    "user": "testUser1",
+    "amount": "111",
+    "id": 4
+  },
+  {
+    "_class": "mentoring.epam.bank.domain.Balance",
+    "user": "testUser2",
+    "amount": "112",
+    "id": 5
+  },
+  {
+    "_class": "mentoring.epam.bank.domain.Balance",
+    "user": "testUser3",
+    "amount": "113",
+    "id": 7
+  }
+]
