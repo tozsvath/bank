@@ -1,0 +1,11 @@
+spring:
+  data:
+    mongodb:
+      database: bank
+      host: ${MONGO_MONGODB_SERVICE_HOST}
+      port: ${MONGO_MONGODB_SERVICE_PORT_MONGODB}
+      user: bank
+      password: bank123
+      uri: mongodb://bank:bank123@${MONGO_MONGODB_SERVICE_HOST}:${MONGO_MONGODB_SERVICE_PORT_MONGODB}/bank
+server:
+  port: 8080

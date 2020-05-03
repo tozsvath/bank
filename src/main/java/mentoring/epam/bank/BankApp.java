@@ -1,10 +1,11 @@
 package mentoring.epam.bank;
 
 import java.util.Arrays;
+import java.util.Map;
 
 
-import mentoring.epam.bank.domain.Balance;
-import mentoring.epam.bank.repository.BalanceRepository;
+//import mentoring.epam.bank.domain.Balance;
+//import mentoring.epam.bank.repository.BalanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -16,8 +17,8 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class BankApp implements CommandLineRunner {
 
-    @Autowired
-    private BalanceRepository repository;
+//    @Autowired
+//    private BalanceRepository repository;
 
     public static void main(String[] args) {
         SpringApplication.run(BankApp.class, args);
@@ -32,8 +33,13 @@ public class BankApp implements CommandLineRunner {
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);
             for (String beanName : beanNames) {
-                //System.out.println(beanName);
+                System.out.println(beanName);
             }
+
+            Map<String, String> env = System.getenv();
+            // Java 8
+            env.forEach((k, v) -> System.out.println(k + ":" + v));
+
 
         };
 
@@ -52,15 +58,15 @@ public class BankApp implements CommandLineRunner {
         // fetch all customers
         System.out.println("Customers found with findAll():");
         System.out.println("-------------------------------");
-        for (Balance customer : repository.findAll()) {
-            System.out.println(customer.user +" -- " +customer.amount);
-        }
+//        for (Balance customer : repository.findAll()) {
+//            System.out.println(customer.user +" -- " +customer.amount);
+//        }
         System.out.println();
 
         // fetch an individual customer
         System.out.println("Customer found with findByFirstName('Alice'):");
         System.out.println("--------------------------------");
-        System.out.println(repository.findByUser("Alice"));
+//        System.out.println(repository.findByUser("Alice"));
 
         System.out.println("Customers found with findByLastName('Smith'):");
         System.out.println("--------------------------------");

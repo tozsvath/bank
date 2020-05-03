@@ -49,7 +49,7 @@ public class BankController {
             status = OK;
 
             headers.add("id",transaction.getId());
-            headers.add("user",balance.getUser());
+            headers.add("user",transaction.getUser());
             headers.add("balance",String.valueOf(balance.getAmount()));
 
         } catch (MongoException mongoException) {
@@ -80,10 +80,11 @@ public class BankController {
                 if (balance.getAmount() - transaction.getAmount() < 0) {
                     httpStatus = HttpStatus.OK;
                     status = NOT_ENOUGH_FOUNDS;
-                    withdraw = new WithdrawResponse(transaction.getId(), balance.getUser(), transaction.getAmount(), status);
+                    withdraw = new WithdrawResponse(transaction.getId(), balance.getUser(), 0.0, status);
 
                 } else {
                     balance.withdrawCash(transaction.getAmount());
+                    balanceRepository.save(balance);
                     withdraw = new WithdrawResponse(transaction.getId(), balance.getUser(), transaction.getAmount(), OK);
                     httpStatus = HttpStatus.OK;
                     status = OK;

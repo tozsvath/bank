@@ -14,14 +14,16 @@ class ApplicationConfig {
     @Autowired
     private BalanceRepository repository;
 
-    @Bean
-    public Jackson2RepositoryPopulatorFactoryBean repositoryPopulator() {
-
-        repository.deleteAll();
-        Resource sourceData = new ClassPathResource("mongo.json");
-
-        Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
-        factory.setResources(new Resource[] { sourceData });
-        return factory;
-    }
+//    @Bean
+//    public Jackson2RepositoryPopulatorFactoryBean repositoryPopulator() {
+//
+//
+//
+//        repository.deleteAll();
+//        Resource sourceData = new ClassPathResource(".json");
+//
+//        Jackson2RepositoryPopulatorFactoryBean factory = new Jackson2RepositoryPopulatorFactoryBean();
+//        factory.setResources(new Resource[] { sourceData });
+//        return factory;
+//    }
 }

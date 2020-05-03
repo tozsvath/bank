@@ -2,10 +2,12 @@ package mentoring.epam.bank.domain;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.Objects;
+
 public class Balance {
     @Id
     public String user;
-    public double amount;
+    public Double amount;
 
     public Balance(String user, double amount) {
         this.user = user;
@@ -23,7 +25,7 @@ public class Balance {
     }
 
     public double getAmount() {
-        return amount;
+        return Objects.isNull(amount) ? 0 : amount;
     }
 
     public void setAmount(double amount) {
