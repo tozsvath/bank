@@ -2,15 +2,18 @@ package mentoring.epam.bank.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
+
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class DepositResponse {
 
-    @Id
     private String id;
+    private String user;
+    private Double balance;
     private String status;
 }

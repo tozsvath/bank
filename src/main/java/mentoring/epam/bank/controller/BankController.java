@@ -46,18 +46,14 @@ public class BankController {
                 balance = new Balance(transaction.getUser(), transaction.getAmount());
                 balanceRepository.save(balance);
             }
-            depositResponse = new DepositResponse(transaction.getId(), OK);
+            depositResponse = new DepositResponse(transaction.getId(),transaction.getUser(),balance.getAmount(), OK);
             httpStatus = HttpStatus.OK;
             status = OK;
-
-            headers.add("id", transaction.getId());
-            headers.add("user", transaction.getUser());
-            headers.add("balance", String.valueOf(balance.getAmount()));
 
         } catch (MongoException mongoException) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             status = mongoException.getMessage();
-            depositResponse = new DepositResponse(transaction.getId(), ERROR);
+            depositResponse = new DepositResponse(transaction.getId(),transaction.getUser(),null, ERROR);
         }
 
         headers.add("status", status);
@@ -96,13 +92,9 @@ public class BankController {
 
                 httpStatus = HttpStatus.NOT_FOUND;
                 status = NOT_FOUND;
-                withdraw = new WithdrawResponse(transaction.getId(), balance.getUser(), transaction.getAmount(), NOT_FOUND);
+                withdraw = new WithdrawResponse(transaction.getId(), transaction.getUser(), transaction.getAmount(), NOT_FOUND);
             }
 
-            headers.add("id", transaction.getId());
-            headers.add("user", balance.getUser());
-            headers.add("amount", String.valueOf(transaction.getAmount()));
-            headers.add("message", status);
 
         } catch (MongoException mongoException) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
