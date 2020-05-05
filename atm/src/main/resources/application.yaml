@@ -1,0 +1,7 @@
+api:
+  host: ${BANK_BANK_CHART_SERVICE_HOST}
+  port: ${BANK_BANK_CHART_SERVICE_PORT}
+  user: asd
+  password: basd
+server:
+  port: 8082

@@ -1,0 +1,29 @@
+ext {
+
+    //Spring
+    springVersion = '2.2.6.RELEASE'
+    springDependencyManagementPlugin = '1.0.9.RELEASE'
+
+    //Other
+    lombokVersion = '1.18.12'
+
+    // Test Libraries
+    versionJunit = '4.12'
+
+    libs = [
+            springBootWeb : "org.springframework.boot:spring-boot-starter-web:$springVersion",
+            springBootActuator : "org.springframework.boot:spring-boot-starter-actuator:$springVersion",
+            springBootData: "org.springframework.data:spring-data-commons:$springVersion",
+            springBootMongo: "org.springframework.boot:spring-boot-starter-data-mongodb:$springVersion",
+
+            lombok : "org.projectlombok:lombok:$lombokVersion",
+
+            springBootTest : "org.springframework.boot:spring-boot-starter-test:$springVersion",
+            junit : "junit:junit:$versionJunit",
+
+            //plugins
+            springDependencyManagementPlugin : "io.spring.dependency-management:io.spring.dependency-management.gradle.plugin:$springDependencyManagementPlugin",
+            springBootPlugin : "org.springframework.boot:spring-boot-gradle-plugin:$springVersion"
+
+    ]
+}

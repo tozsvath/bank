@@ -1,0 +1,26 @@
+plugins {
+    id 'org.springframework.boot' version '2.2.6.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+apply from: "../dependencies.gradle"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation libs.springBootWeb
+    implementation libs.springBootMongo
+    implementation libs.springBootData
+    implementation libs.springBootActuator
+    implementation libs.lombok
+
+    testImplementation(libs.springBootTest) {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+
+    annotationProcessor libs.lombok
+
+    testCompile libs.junit
+}
