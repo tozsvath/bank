@@ -4,8 +4,7 @@ import java.util.Arrays;
 import java.util.Map;
 
 
-//import mentoring.epam.bank.domain.Balance;
-//import mentoring.epam.bank.repository.BalanceRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,8 +16,6 @@ import org.springframework.context.annotation.Bean;
 @SpringBootApplication
 public class BankApp implements CommandLineRunner {
 
-//    @Autowired
-//    private BalanceRepository repository;
 
     public static void main(String[] args) {
         SpringApplication.run(BankApp.class, args);

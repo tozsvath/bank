@@ -1,0 +1,17 @@
+
+bank-chart:
+  # Default values for bank-chart.
+  # This is a YAML-formatted file.
+  # Declare variables to be passed into your templates.
+
+  replicaCount: 1
+
+  image:
+    repository: hobbikertesz17/bank
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart version.
+    tag: "kecske"
+
+  service:
+    type: LoadBalancer
+    port: 8081

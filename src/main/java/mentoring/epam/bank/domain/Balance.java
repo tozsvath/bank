@@ -1,11 +1,16 @@
 package mentoring.epam.bank.domain;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Objects;
 
 public class Balance {
+
     @Id
+    String _id;
+
     public String user;
     public Double amount;
 

@@ -1,0 +1,12 @@
+dependencies:
+- name: mongodb
+  repository: http://localhost:8080/
+  version: 7.13.0
+- name: bank-chart
+  repository: http://localhost:8080/
+  version: 0.1.0
+- name: atm-chart
+  repository: http://localhost:8080/
+  version: 0.1.0
+digest: sha256:319430c431d17c2b171aebb40326001592756baa34dfdf75019a6a6b46ac81ce
+generated: "2020-05-05T08:16:43.094915961+02:00"

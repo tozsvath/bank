@@ -41,16 +41,18 @@ public class BankController {
             if (!Objects.isNull(balance)) {
                 balance.depositCash(transaction.getAmount());
                 balanceRepository.save(balance);
+
             } else {
-                balanceRepository.save(new Balance(transaction.getUser(), transaction.getAmount()));
+                balance = new Balance(transaction.getUser(), transaction.getAmount());
+                balanceRepository.save(balance);
             }
             depositResponse = new DepositResponse(transaction.getId(), OK);
             httpStatus = HttpStatus.OK;
             status = OK;
 
-            headers.add("id",transaction.getId());
-            headers.add("user",transaction.getUser());
-            headers.add("balance",String.valueOf(balance.getAmount()));
+            headers.add("id", transaction.getId());
+            headers.add("user", transaction.getUser());
+            headers.add("balance", String.valueOf(balance.getAmount()));
 
         } catch (MongoException mongoException) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
@@ -58,7 +60,7 @@ public class BankController {
             depositResponse = new DepositResponse(transaction.getId(), ERROR);
         }
 
-        headers.add("status",status);
+        headers.add("status", status);
 
         headers.add(IS_TRANSACTION_SUCCESSFUL, status);
 
