@@ -6,6 +6,9 @@ plugins {
 
 apply from: "../dependencies.gradle"
 
+group 'epam.mentoring'
+version '1.0-SNAPSHOT'
+
 repositories {
     mavenCentral()
 }

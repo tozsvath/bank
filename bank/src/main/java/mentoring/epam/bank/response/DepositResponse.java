@@ -1,4 +1,4 @@
-package mentoring.epam.bank.domain;
+package mentoring.epam.bank.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

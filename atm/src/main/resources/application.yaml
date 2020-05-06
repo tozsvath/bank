@@ -1,6 +1,6 @@
 api:
-  host: ${BANK_BANK_CHART_SERVICE_HOST}
-  port: ${BANK_BANK_CHART_SERVICE_PORT}
+  host: ${BANK_APP_BANK_CHART_SERVICE_HOST:localhost}
+  port: ${BANK_APP_BANK_CHART_SERVICE_PORT_HTTP:8081}
   user: asd
   password: basd
 server:

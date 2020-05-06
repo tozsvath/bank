@@ -1,6 +1,8 @@
 use bank;
 db.createUser({user: "bank", pwd: "bank123", roles:[{role:"readWrite", db: "bank"}]});
 use bank;
+db.balance.drop();
+db.balance.createIndex( { "user": 1 }, { unique: true } );
 db.balance.insert({"user": "testUser1","amount":100,"_class" : "mentoring.epam.bank.domain.Balance"});
 db.balance.insert({"user": "testUser2","amount":111,"_class" : "mentoring.epam.bank.domain.Balance"});
 db.balance.insert({"user": "testUser3","amount":222,"_class" : "mentoring.epam.bank.domain.Balance"});
