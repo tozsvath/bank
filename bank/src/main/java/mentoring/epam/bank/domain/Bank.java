@@ -2,34 +2,34 @@ package mentoring.epam.bank.domain;
 
 import com.mongodb.MongoException;
 import mentoring.epam.bank.repository.BalanceRepository;
-import mentoring.epam.bank.response.DepositResponse;
-import mentoring.epam.bank.response.WithdrawResponse;
+import mentoring.epam.bank.response.TransactionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 
 @Component
 public class Bank {
 
-    private static String ERROR = "ERROR";
-    private static String OK = "OK";
-    private static String IS_TRANSACTION_SUCCESSFUL = "IsTransactionSuccessfull";
-    private static String NOT_ENOUGH_FOUNDS = "Not enough founds.";
-    private static String NOT_FOUND = "Not user found with this name";
+    private static final String ERROR = "ERROR";
+    private static final String OK = "OK";
+    private static final String IS_TRANSACTION_SUCCESSFUL = "IsTransactionSuccessfull";
+    private static final String NOT_ENOUGH_FOUNDS = "Not enough founds.";
+    private static final String NOT_FOUND = "Not user found with this name";
 
     @Autowired
     BalanceRepository balanceRepository;
 
-    public ResponseEntity<DepositResponse> depositCash(Transaction transaction) {
+    public ResponseEntity<TransactionResponse> depositCash(Transaction transaction) {
 
         HttpHeaders headers = new HttpHeaders();
         HttpStatus httpStatus;
         String status;
-        DepositResponse depositResponse;
+        TransactionResponse transactionResponse;
 
         try {
             Balance balance = balanceRepository.findByUser(transaction.getUser());
@@ -42,19 +42,19 @@ public class Bank {
                 balance = new Balance(transaction.getUser(), transaction.getAmount());
                 balanceRepository.save(balance);
             }
-            depositResponse = new DepositResponse(transaction.getId(),transaction.getUser(),balance.getAmount(), OK);
+            transactionResponse = new TransactionResponse("0", transaction.getUser(), balance.getAmount(), OK);
             httpStatus = HttpStatus.OK;
             status = OK;
 
         } catch (MongoException mongoException) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             status = mongoException.getMessage();
-            depositResponse = new DepositResponse(transaction.getId(),transaction.getUser(),null, ERROR);
+            transactionResponse = new TransactionResponse("0", transaction.getUser(), null, ERROR);
         }
 
         headers.add(IS_TRANSACTION_SUCCESSFUL, status);
 
-        return new ResponseEntity<>(depositResponse, headers, httpStatus);
+        return new ResponseEntity<>(transactionResponse, headers, httpStatus);
     }
 
     private boolean isUserExist(Balance balance) {
@@ -62,12 +62,12 @@ public class Bank {
     }
 
 
-    public ResponseEntity<WithdrawResponse> withdrawCash(Transaction transaction) {
+    public ResponseEntity<TransactionResponse> withdrawCash(Transaction transaction) {
 
         HttpHeaders headers = new HttpHeaders();
         HttpStatus httpStatus;
         String status;
-        WithdrawResponse withdraw = null;
+        TransactionResponse transactionResponse = null;
 
         try {
             Balance balance = balanceRepository.findByUser(transaction.getUser());
@@ -77,21 +77,22 @@ public class Bank {
 
                     balance.withdrawCash(transaction.getAmount());
                     balanceRepository.save(balance);
-                    withdraw = new WithdrawResponse(transaction.getId(), balance.getUser(), transaction.getAmount(), OK);
+                    //transaction.getId()
+                    transactionResponse = new TransactionResponse("0", balance.getUser(), transaction.getAmount(), OK);
                     httpStatus = HttpStatus.OK;
                     status = OK;
 
                 } else {
                     httpStatus = HttpStatus.OK;
                     status = NOT_ENOUGH_FOUNDS;
-                    withdraw = new WithdrawResponse(transaction.getId(), balance.getUser(), 0.0, status);
+                    transactionResponse = new TransactionResponse("0", balance.getUser(), 0.0, status);
                 }
 
             } else {
 
                 httpStatus = HttpStatus.NOT_FOUND;
                 status = NOT_FOUND;
-                withdraw = new WithdrawResponse(transaction.getId(), transaction.getUser(), transaction.getAmount(), NOT_FOUND);
+                transactionResponse = new TransactionResponse("0", transaction.getUser(), transaction.getAmount(), NOT_FOUND);
             }
 
 
@@ -101,7 +102,43 @@ public class Bank {
         }
         headers.add(IS_TRANSACTION_SUCCESSFUL, status);
 
-        return new ResponseEntity<WithdrawResponse>(withdraw, headers, httpStatus);
+        return new ResponseEntity<>(transactionResponse, headers, httpStatus);
+    }
+
+    public ResponseEntity<Balance> getBalance(String username) {
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpStatus httpStatus = HttpStatus.OK;
+        String status;
+        Balance balance = null;
+
+        try {
+            balance = balanceRepository.findByUser(username);
+
+        } catch (MongoException mongoException) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            status = mongoException.getMessage();
+        }
+
+        return new ResponseEntity<>(balance, headers, httpStatus);
+    }
+
+    public ResponseEntity<List<Balance>> getAllBalance() {
+
+        HttpHeaders headers = new HttpHeaders();
+        HttpStatus httpStatus = HttpStatus.OK;
+        String status;
+        List<Balance> balance = null;
+
+        try {
+            balance = balanceRepository.findAll();
+
+        } catch (MongoException mongoException) {
+            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            status = mongoException.getMessage();
+        }
+
+        return new ResponseEntity<>(balance, headers, httpStatus);
     }
 
     private boolean hasEnoughFounds(Transaction transaction, Balance balance) {

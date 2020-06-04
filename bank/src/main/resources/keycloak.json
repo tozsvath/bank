@@ -1,0 +1,8 @@
+{
+  "realm": "bank",
+  "auth-server-url" : "http://localhost:8080/auth",
+  "resource" : "bank-authz-service",
+  "credentials": {
+    "secret": "6312b351-50b8-4afe-996f-a77bcea53659"
+  }
+}

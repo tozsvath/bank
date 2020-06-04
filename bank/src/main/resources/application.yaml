@@ -7,5 +7,39 @@ spring:
       user: bank
       password: bank123
       uri: mongodb://bank:bank123@${BANK_APP_MONGODB_SERVICE_HOST}:${BANK_APP_MONGODB_SERVICE_PORT_MONGODB}/bank
+  rabbitmq:
+    host: ${BANK_APP_RABBITMQ_SERVICE_HOST:localhost}
+    username: user
+    port: ${BANK_APP_RABBITMQ_PORT_5672_TCP_PORT:5672}
+    password: XAZvBI2Mfb
+    #FIXME
+
 server:
-  port: 8081
+  port: 8085
+rabbitmq:
+   host: ${BANK_APP_RABBITMQ_SERVICE_HOST:localhost}
+   port: ${BANK_APP_RABBITMQ_PORT_5672_TCP_PORT:5672}
+   user: user
+   password: XAZvBI2Mfb
+   #FIXME
+
+security:
+  auth-server-url: http://localhost:8080/
+  realm: bank
+  clientId: bank
+  clientSecret: 1c0899ba-25ad-4416-bf13-0af6fb95db81
+
+keycloak:
+  #serverurl: http://localhost:8080/auth
+  realm: bank
+  auth-server-url: http://localhost:8080/auth
+  resource: product-app
+  public-client: true
+  enabled: true
+  #clientid: bank
+  #clientSecret: 6312b351-50b8-4afe-996f-a77bcea53659
+  #publicclient: true
+
+  #port: 8080
+
+  #keycloak.ssl-required=external

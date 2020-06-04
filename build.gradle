@@ -1,6 +1,33 @@
 group 'epam.mentoring'
 version '1.0-SNAPSHOT'
 
+subprojects {
+    apply plugin: 'java'
+}
+
 repositories {
     mavenCentral()
 }
+
+allprojects {
+    task hello {
+        doLast { task ->
+            println "I'm $task.project.name"
+        }
+    }
+}
+subprojects {
+    hello {
+        doLast {
+            println "- I depend on water"
+        }
+    }
+}
+
+project(':atm') {
+    dependencies {
+        compile project(':bank')
+    }
+}
+
+//atm.compileJava.dependsOn project('bank:build')

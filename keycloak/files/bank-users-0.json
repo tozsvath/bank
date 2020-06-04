@@ -1,0 +1,26 @@
+{
+  "realm" : "bank",
+  "users" : [ {
+    "id" : "02607d8c-6b90-42a5-bbd9-38e47ee4d588",
+    "createdTimestamp" : 1590495736539,
+    "username" : "test1",
+    "enabled" : true,
+    "totp" : false,
+    "emailVerified" : true,
+    "credentials" : [ {
+      "id" : "2eb71cb7-e4f6-49de-9b83-a0c077580dc1",
+      "type" : "password",
+      "createdDate" : 1590495746499,
+      "secretData" : "{\"value\":\"bMUQTxMGODcEGaOqTdQERqenxoZGct7GQpFuzNDk1kc/jt7bpjZE4vg5Tzg3zVFQz2hSJzDH7TM93PVsiLERXg==\",\"salt\":\"JjY/MTsM6xF6RrnDYqKFVw==\"}",
+      "credentialData" : "{\"hashIterations\":27500,\"algorithm\":\"pbkdf2-sha256\"}"
+    } ],
+    "disableableCredentialTypes" : [ ],
+    "requiredActions" : [ ],
+    "realmRoles" : [ "offline_access", "uma_authorization", "bank-role" ],
+    "clientRoles" : {
+      "account" : [ "view-profile", "manage-account" ]
+    },
+    "notBefore" : 0,
+    "groups" : [ ]
+  } ]
+}
