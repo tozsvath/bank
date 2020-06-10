@@ -14,17 +14,16 @@ repositories {
 }
 
 dependencies {
-    compile project(':bank')
+    implementation project(':bank-commons')
+
     implementation libs.springBootWeb
     testImplementation(libs.springBootTest) {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
+
     implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation libs.lombok
-    compile group: 'com.rabbitmq', name: 'amqp-client', version: '5.7.1'
-
     compile libs.springBootActuator
-
     annotationProcessor libs.lombok
 
     testCompile libs.junit

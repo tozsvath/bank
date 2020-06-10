@@ -25,7 +25,6 @@ public class Transaction implements Serializable {
     public byte[] getBytes() {
 
         byte[] data = SerializationUtils.serialize(this);
-
         return data;
     }
 }

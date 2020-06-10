@@ -2,14 +2,14 @@ package mentoring.epam.atm.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import mentoring.epam.atm.domain.Atm;
+import mentoring.epam.atm.rabbitmq.RabbitmqSenderAtm;
 import mentoring.epam.bank.domain.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
-import responses.DepositResponse;
-import responses.WithdrawResponse;
 
 import java.io.IOException;
 import java.util.concurrent.TimeoutException;
@@ -18,19 +18,28 @@ import java.util.concurrent.TimeoutException;
 @RestController
 public class PaymentController {
 
+    public static final String AUTHORIZATION = "Authorization";
+    private Atm atm;
+    private RabbitmqSenderAtm rabbitmqSenderAtm;
+
     @Autowired
-    Atm atm;
+    public PaymentController(Atm atm, RabbitmqSenderAtm rabbitmqSenderAtm) {
+        this.atm = atm;
+        this.rabbitmqSenderAtm = rabbitmqSenderAtm;
+    }
 
     @PostMapping("/withdraw")
-    public WithdrawResponse withdrawCash(@RequestHeader("Authorization") String token, @RequestBody Transaction transaction) throws IOException, TimeoutException {
+    public HttpStatus withdrawCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) throws IOException, TimeoutException {
 
-        return atm.withdrawCash(token,transaction);
+        atm.withdrawCash(token, transaction);
+        return HttpStatus.OK;
     }
 
     @PostMapping("/deposit")
-    public DepositResponse depositCash(@RequestHeader("Authorization") String token, @RequestBody Transaction transaction) {
+    public HttpStatus depositCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) {
 
-        return atm.depositCash(token,transaction);
+        atm.depositCash(token, transaction);
+        return HttpStatus.OK;
     }
 
 }

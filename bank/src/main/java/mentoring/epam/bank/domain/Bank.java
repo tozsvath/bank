@@ -2,7 +2,7 @@ package mentoring.epam.bank.domain;
 
 import com.mongodb.MongoException;
 import mentoring.epam.bank.repository.BalanceRepository;
-import mentoring.epam.bank.response.TransactionResponse;
+import mentoring.epam.bank.commons.response.TransactionResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,11 +20,16 @@ public class Bank {
     private static final String IS_TRANSACTION_SUCCESSFUL = "IsTransactionSuccessfull";
     private static final String NOT_ENOUGH_FOUNDS = "Not enough founds.";
     private static final String NOT_FOUND = "Not user found with this name";
+    public static final String ID = "0";
+
+    private final BalanceRepository balanceRepository;
 
     @Autowired
-    BalanceRepository balanceRepository;
+    public Bank(BalanceRepository balanceRepository) {
+        this.balanceRepository = balanceRepository;
+    }
 
-    public ResponseEntity<TransactionResponse> depositCash(Transaction transaction) {
+    public TransactionResponse depositCash(Transaction transaction) {
 
         HttpHeaders headers = new HttpHeaders();
         HttpStatus httpStatus;
@@ -42,19 +47,19 @@ public class Bank {
                 balance = new Balance(transaction.getUser(), transaction.getAmount());
                 balanceRepository.save(balance);
             }
-            transactionResponse = new TransactionResponse("0", transaction.getUser(), balance.getAmount(), OK);
+            transactionResponse = new TransactionResponse(ID, transaction.getUser(), balance.getAmount(), OK);
             httpStatus = HttpStatus.OK;
             status = OK;
 
         } catch (MongoException mongoException) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
             status = mongoException.getMessage();
-            transactionResponse = new TransactionResponse("0", transaction.getUser(), null, ERROR);
+            transactionResponse = new TransactionResponse(ID, transaction.getUser(), null, ERROR);
         }
 
         headers.add(IS_TRANSACTION_SUCCESSFUL, status);
 
-        return new ResponseEntity<>(transactionResponse, headers, httpStatus);
+        return transactionResponse;
     }
 
     private boolean isUserExist(Balance balance) {
@@ -62,7 +67,7 @@ public class Bank {
     }
 
 
-    public ResponseEntity<TransactionResponse> withdrawCash(Transaction transaction) {
+    public TransactionResponse withdrawCash(Transaction transaction) {
 
         HttpHeaders headers = new HttpHeaders();
         HttpStatus httpStatus;
@@ -77,22 +82,22 @@ public class Bank {
 
                     balance.withdrawCash(transaction.getAmount());
                     balanceRepository.save(balance);
-                    //transaction.getId()
-                    transactionResponse = new TransactionResponse("0", balance.getUser(), transaction.getAmount(), OK);
+
+                    transactionResponse = new TransactionResponse(ID, balance.getUser(), transaction.getAmount(), OK);
                     httpStatus = HttpStatus.OK;
                     status = OK;
 
                 } else {
                     httpStatus = HttpStatus.OK;
                     status = NOT_ENOUGH_FOUNDS;
-                    transactionResponse = new TransactionResponse("0", balance.getUser(), 0.0, status);
+                    transactionResponse = new TransactionResponse(ID, balance.getUser(), 0.0, status);
                 }
 
             } else {
 
                 httpStatus = HttpStatus.NOT_FOUND;
                 status = NOT_FOUND;
-                transactionResponse = new TransactionResponse("0", transaction.getUser(), transaction.getAmount(), NOT_FOUND);
+                transactionResponse = new TransactionResponse(ID, transaction.getUser(), transaction.getAmount(), NOT_FOUND);
             }
 
 
@@ -102,7 +107,7 @@ public class Bank {
         }
         headers.add(IS_TRANSACTION_SUCCESSFUL, status);
 
-        return new ResponseEntity<>(transactionResponse, headers, httpStatus);
+        return transactionResponse;
     }
 
     public ResponseEntity<Balance> getBalance(String username) {

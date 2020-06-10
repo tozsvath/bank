@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class Balance {
 
+    public static final int NO_VALUE = 0;
     public String user;
     public Double amount;
 
@@ -20,7 +21,7 @@ public class Balance {
     }
 
     public double getAmount() {
-        return Objects.isNull(amount) ? 0 : amount;
+        return Objects.isNull(amount) ? NO_VALUE : amount;
     }
 
     public void setAmount(double amount) {

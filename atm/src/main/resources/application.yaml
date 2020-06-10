@@ -24,7 +24,9 @@ keycloak:
   security-constraints[0].securityCollections[0].patterns[0]: /deposit
 
 spring:
-   rabbitmq:
+  main:
+    allow-bean-definition-overriding: true
+  rabbitmq:
      host: ${BANK_APP_RABBITMQ_SERVICE_HOST:localhost}
      username: user
      port: ${BANK_APP_RABBITMQ_PORT_5672_TCP_PORT:5672}

@@ -1,4 +1,5 @@
 rootProject.name = 'bankApp'
-include 'atm','bank'
-include 'core'
+include 'atm'
+include 'bank'
+include 'bank-commons'
 
