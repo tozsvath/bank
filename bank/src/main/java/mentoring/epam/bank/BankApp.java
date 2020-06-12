@@ -10,7 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication(scanBasePackages={
-        "mentoring.epam.bank.auth.auth", "mentoring.epam.bank","mentoring.epam.bank.rabbitmq.rabbitmq"})
+        "mentoring.epam.bank.repository.keycloak.auth.auth", "mentoring.epam.bank","mentoring.epam.bank.rabbitmq.rabbitmq"})
 public class BankApp {
 
     public static void main(String[] args) {
