@@ -1,11 +1,10 @@
 package mentoring.epam.bank.controller.rest;
 
+import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.repository.keycloak.auth.client.KeycloakClient;
-//import mentoring.epam.bank.domain.bank.Balance;
 import mentoring.epam.bank.commons.domain.bank.Balance;
 import mentoring.epam.bank.domain.bank.Bank;
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
-import mentoring.epam.bank.domain.bank.Transaction;
 import org.keycloak.authorization.client.representation.TokenIntrospectionResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

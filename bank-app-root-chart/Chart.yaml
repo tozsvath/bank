@@ -13,15 +13,22 @@ description: A Helm chart for Kubernetes
 type: application
 
 dependencies:
+  - name: keycloak
+    version: "8.1.0"
+    repository: "@codecentric"
   - name: mongodb
     version: "7.13.0"
     repository: "http://localhost:8081/"
+  - name: rabbitmq
+    version: "6.25.11"
+    repository: "@bitnami"
   - name: bank-chart
     version: "0.1.0"
     repository: "http://localhost:8081/"
   - name: atm-chart
     version: "0.1.0"
     repository: "http://localhost:8081/"
+
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)

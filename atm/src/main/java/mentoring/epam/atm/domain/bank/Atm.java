@@ -2,8 +2,8 @@ package mentoring.epam.atm.domain.bank;
 
 import lombok.extern.slf4j.Slf4j;
 import mentoring.epam.atm.repository.rabbitmq.RabbitmqSenderAtm;
+import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.commons.repository.rabbitmq.RabbitmqRouteNames;
-import mentoring.epam.bank.domain.bank.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;

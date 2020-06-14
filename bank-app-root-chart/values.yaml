@@ -1,9 +1,7 @@
-
 bank-chart:
   # Default values for bank-chart.
   # This is a YAML-formatted file.
   # Declare variables to be passed into your templates.
-
   replicaCount: 1
 
   image:
@@ -15,3 +13,22 @@ bank-chart:
   service:
     type: LoadBalancer
     port: 8081
+
+rabbitmq:
+  username: user
+  pullPolicy: IfNotPresent
+  password: XAZvBI2Mfb
+
+keycloak:
+  image:
+    repository: docker.io/jboss/keycloak
+
+    tag: ""
+    pullPolicy: IfNotPresent
+
+    extraArgs: -Dkeycloak.import=/bank-full-users/bank-realm.json
+
+    username: keycloak
+    password: "kecske123"
+atm-chart:
+  pullPolicy: Always

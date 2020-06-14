@@ -1,6 +1,7 @@
 package mentoring.epam.bank.domain.bank;
 
 import com.mongodb.MongoException;
+import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.repository.mongodb.BalanceRepository;
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -32,7 +32,3 @@ dependencies {
     annotationProcessor libs.lombok
     testCompile libs.junit
 }
-
-jar {
-    enabled = true
-}

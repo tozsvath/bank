@@ -1,6 +1,6 @@
 package mentoring.epam.atm.repository.rabbitmq;
 
-import mentoring.epam.bank.domain.bank.Transaction;
+import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.Message;

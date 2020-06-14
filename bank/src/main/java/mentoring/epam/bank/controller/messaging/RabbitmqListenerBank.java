@@ -1,9 +1,9 @@
 package mentoring.epam.bank.controller.messaging;
 
+import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.commons.repository.rabbitmq.RabbitmqRouteNames;
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
 import mentoring.epam.bank.domain.bank.Bank;
-import mentoring.epam.bank.domain.bank.Transaction;
 import mentoring.epam.bank.repository.rabbitmq.RabbitmqSenderBank;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;

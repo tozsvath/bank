@@ -25,6 +25,8 @@ dependencies {
     implementation libs.lombok
     compile libs.springBootActuator
     annotationProcessor libs.lombok
+    compile group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '8.0.2'
+    implementation "org.springframework.boot:spring-boot-starter-security"
 
     testCompile libs.junit
 }

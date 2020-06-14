@@ -24,22 +24,14 @@ rabbitmq:
    #FIXME
 
 security:
-  auth-server-url: http://localhost:8080/
+  auth-server-url: http://${BANK_APP_KEYCLOAK_HTTP_SERVICE_HOST}:${BANK_APP_KEYCLOAK_HTTP_SERVICE_PORT_HTTP}/auth
   realm: bank
   clientId: bank
   clientSecret: 1c0899ba-25ad-4416-bf13-0af6fb95db81
 
 keycloak:
-  #serverurl: http://localhost:8080/auth
   realm: bank
-  auth-server-url: http://localhost:8080/auth
+  auth-server-url: http://${BANK_APP_KEYCLOAK_HTTP_SERVICE_HOST}:${BANK_APP_KEYCLOAK_HTTP_SERVICE_PORT_HTTP}/auth
   resource: product-app
   public-client: true
   enabled: true
-  #clientid: bank
-  #clientSecret: 6312b351-50b8-4afe-996f-a77bcea53659
-  #publicclient: true
-
-  #port: 8080
-
-  #keycloak.ssl-required=external

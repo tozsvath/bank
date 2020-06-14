@@ -41,10 +41,10 @@ class SecurityConfig extends KeycloakWebSecurityConfigurerAdapter {
                 new SessionRegistryImpl());
     }
 
-    @Bean
-    public KeycloakSpringBootConfigResolver KeycloakConfigResolver() {
-        return new KeycloakSpringBootConfigResolver();
-    }
+//    @Bean
+//    public KeycloakSpringBootConfigResolver KeycloakConfigResolver() {
+//        return new KeycloakSpringBootConfigResolver();
+//    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
