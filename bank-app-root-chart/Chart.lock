@@ -1,6 +1,6 @@
 dependencies:
 - name: keycloak
-  repository: https://codecentric.github.io/helm-charts
+  repository: http://localhost:8081/
   version: 8.1.0
 - name: mongodb
   repository: http://localhost:8081/
@@ -14,5 +14,5 @@ dependencies:
 - name: atm-chart
   repository: http://localhost:8081/
   version: 0.1.0
-digest: sha256:799532dad673816c4ea07266cf9588f303936cba51881954ca58f5244717d2e1
-generated: "2020-06-14T15:18:20.622612715+02:00"
+digest: sha256:911210d469dd8de2d54b222e69070ebd85a04e0e5e8886959f4e49340ec28cb1
+generated: "2020-06-15T10:12:57.903762035+02:00"

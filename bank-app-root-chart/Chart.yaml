@@ -15,7 +15,8 @@ type: application
 dependencies:
   - name: keycloak
     version: "8.1.0"
-    repository: "@codecentric"
+    repository: "http://localhost:8081/"
+    #repository: "@codecentric"
   - name: mongodb
     version: "7.13.0"
     repository: "http://localhost:8081/"

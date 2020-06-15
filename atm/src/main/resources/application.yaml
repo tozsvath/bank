@@ -1,14 +1,12 @@
 api:
   host: ${BANK_APP_BANK_CHART_SERVICE_HOST:localhost}
-  port: 8085
-  user: asd
-  password: basd
+  port: ${BANK_APP_BANK_CHART_SERVICE_PORT:8085}
 server:
   port: 8001
 
 keycloak:
   realm: bank
-  auth-server-url: http://${BANK_APP_KEYCLOAK_HTTP_SERVICE_HOST}:${BANK_APP_KEYCLOAK_HTTP_SERVICE_PORT_HTTP}/auth
+  auth-server-url: http://${BANK_APP_KEYCLOAK_HTTP_SERVICE_HOST:localhost}:${BANK_APP_KEYCLOAK_HTTP_SERVICE_PORT_HTTP:8080}/auth
   resource: product-app
   public-client: true
   enabled: true
@@ -19,14 +17,14 @@ spring:
   main:
     allow-bean-definition-overriding: true
   rabbitmq:
-    host: ${BANK_APP_RABBITMQ_SERVICE_HOST}
+    host: ${BANK_APP_RABBITMQ_SERVICE_HOST:localhost}
     username: user
     port: ${BANK_APP_RABBITMQ_PORT_5672_TCP_PORT:5672}
     password: XAZvBI2Mfb
     #FIXME
 
 rabbitmq:
-  host: ${BANK_APP_RABBITMQ_SERVICE_HOST}
+  host: ${BANK_APP_RABBITMQ_SERVICE_HOST:localhost}
   port: ${BANK_APP_RABBITMQ_PORT_5672_TCP_PORT:5672}
   user: user
   password: XAZvBI2Mfb

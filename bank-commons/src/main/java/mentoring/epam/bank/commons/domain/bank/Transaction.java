@@ -2,6 +2,7 @@ package mentoring.epam.bank.commons.domain.bank;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.apache.commons.lang3.SerializationUtils;
 
@@ -10,6 +11,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class Transaction implements Serializable {
 
     private String user;
