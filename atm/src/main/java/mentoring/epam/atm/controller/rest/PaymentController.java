@@ -28,14 +28,14 @@ public class PaymentController {
         this.rabbitmqSenderAtm = rabbitmqSenderAtm;
     }
 
-    @PostMapping("/withdraw")
+    @PostMapping("/atm/withdraw")
     public HttpStatus withdrawCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) throws IOException, TimeoutException {
 
         atm.withdrawCash(token, transaction);
         return HttpStatus.OK;
     }
 
-    @PostMapping("/deposit")
+    @PostMapping("/atm/deposit")
     public HttpStatus depositCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) {
 
         atm.depositCash(token, transaction);

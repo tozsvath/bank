@@ -255,7 +255,7 @@ keycloak:
   ## Ingress configuration.
   ## ref: https://kubernetes.io/docs/user-guide/ingress/
   ingress:
-    enabled: false
+    enabled: true
     path: /
 
     annotations: {}

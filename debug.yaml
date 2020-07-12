@@ -1,0 +1,1926 @@
+NAME: bank-app
+LAST DEPLOYED: Tue Jun 16 10:48:07 2020
+NAMESPACE: default
+STATUS: pending-install
+REVISION: 1
+USER-SUPPLIED VALUES:
+atm-chart:
+  pullPolicy: Always
+bank-chart:
+  image:
+    pullPolicy: Always
+    repository: hobbikertesz17/bank
+    tag: kecske
+  replicaCount: 1
+  service:
+    port: 8081
+    type: LoadBalancer
+my-keycloak:
+  extraArgs: -Dkeycloak.import=/bank-full-users/bank-realm.json
+  extraVolumeMounts: |
+    - name: bank-full-secret
+      mountPath: "/bank-full-users/"
+      readOnly: true
+  extraVolumes: |
+    - name: bank-full-secret
+      secret:
+        secretName: bank-full-secret
+  image:
+    repository: docker.io/jboss/keycloak
+  password: kecske123
+  pullPolicy: IfNotPresent
+  replicas: 1
+  tag: ""
+  username: keycloak
+rabbitmq:
+  rabbitmq:
+    password: XAZvBI2Mfb
+    username: user
+
+COMPUTED VALUES:
+atm-chart:
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  global: {}
+  image:
+    pullPolicy: Always
+    repository: hobbikertesz17/atm
+    tag: kecske
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths:
+      - /kecske.local
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  pullPolicy: Always
+  replicaCount: 1
+  resources: {}
+  securityContext: {}
+  service:
+    port: 8001
+    type: LoadBalancer
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+bank-chart:
+  affinity: {}
+  autoscaling:
+    enabled: false
+    maxReplicas: 100
+    minReplicas: 1
+    targetCPUUtilizationPercentage: 80
+  fullnameOverride: ""
+  global: {}
+  image:
+    pullPolicy: Always
+    repository: hobbikertesz17/bank
+    tag: kecske
+  imagePullSecrets: []
+  ingress:
+    annotations: {}
+    enabled: false
+    hosts:
+    - host: chart-example.local
+      paths: []
+    tls: []
+  nameOverride: ""
+  nodeSelector: {}
+  podAnnotations: {}
+  podSecurityContext: {}
+  replicaCount: 1
+  resources: {}
+  securityContext: {}
+  service:
+    port: 8081
+    type: LoadBalancer
+  serviceAccount:
+    annotations: {}
+    create: true
+    name: ""
+  tolerations: []
+mongodb:
+  affinity: {}
+  affinityArbiter: {}
+  annotations: {}
+  configmap: null
+  extraVolumeMounts: []
+  extraVolumeMountsArbiter: []
+  extraVolumes: []
+  extraVolumesArbiter: []
+  global: {}
+  image:
+    debug: false
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: bitnami/mongodb
+    tag: 4.2.6-debian-10-r13
+  ingress:
+    certManager: false
+    enabled: false
+    hosts:
+    - name: mongodb.local
+      path: /
+    tls:
+    - hosts:
+      - mongodb.local
+      secretName: mongodb.local-tls
+  initConfigMap: {}
+  labels: {}
+  livenessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 30
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  metrics:
+    enabled: false
+    extraArgs: ""
+    image:
+      pullPolicy: IfNotPresent
+      registry: docker.io
+      repository: bitnami/mongodb-exporter
+      tag: 0.11.0-debian-10-r1
+    livenessProbe:
+      enabled: false
+      failureThreshold: 3
+      initialDelaySeconds: 15
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 5
+    podAnnotations:
+      prometheus.io/port: "9216"
+      prometheus.io/scrape: "true"
+    readinessProbe:
+      enabled: false
+      failureThreshold: 3
+      initialDelaySeconds: 5
+      periodSeconds: 5
+      successThreshold: 1
+      timeoutSeconds: 1
+    serviceMonitor:
+      additionalLabels: {}
+      alerting:
+        additionalLabels: {}
+        rules: {}
+      enabled: false
+  mongodbDirectoryPerDB: false
+  mongodbDisableSystemLog: false
+  mongodbEnableIPv6: false
+  mongodbExtraFlags: []
+  mongodbSystemLogVerbosity: 0
+  nodeSelector: {}
+  nodeSelectorArbiter: {}
+  persistence:
+    accessModes:
+    - ReadWriteOnce
+    annotations: {}
+    enabled: true
+    mountPath: /bitnami/mongodb
+    size: 8Gi
+    subPath: ""
+  podAnnotations: {}
+  podLabels: {}
+  readinessProbe:
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    successThreshold: 1
+    timeoutSeconds: 5
+  replicaSet:
+    enabled: false
+    name: rs0
+    pdb:
+      enabled: true
+      minAvailable:
+        arbiter: 1
+        primary: 1
+        secondary: 1
+    replicas:
+      arbiter: 1
+      secondary: 1
+    useHostnames: true
+  resources: {}
+  resourcesArbiter: {}
+  securityContext:
+    enabled: true
+    fsGroup: 1001
+    runAsUser: 1001
+  service:
+    annotations: {}
+    port: 27017
+    type: ClusterIP
+  serviceAccount:
+    create: true
+  sidecars: []
+  sidecarsArbiter: []
+  tolerations: []
+  updateStrategy:
+    type: RollingUpdate
+  usePassword: true
+  useStatefulSet: false
+  volumePermissions:
+    enabled: false
+    image:
+      pullPolicy: Always
+      registry: docker.io
+      repository: bitnami/minideb
+      tag: buster
+    resources: {}
+my-keycloak:
+  clusterDomain: cluster.local
+  extraArgs: -Dkeycloak.import=/bank-full-users/bank-realm.json
+  extraVolumeMounts: |
+    - name: bank-full-secret
+      mountPath: "/bank-full-users/"
+      readOnly: true
+  extraVolumes: |
+    - name: bank-full-secret
+      secret:
+        secretName: bank-full-secret
+  global: {}
+  image:
+    repository: docker.io/jboss/keycloak
+  init:
+    image:
+      pullPolicy: IfNotPresent
+      repository: busybox
+      tag: 1.31
+    resources: {}
+  keycloak:
+    affinity: |
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                {{- include "keycloak.selectorLabels" . | nindent 10 }}
+              matchExpressions:
+                - key: role
+                  operator: NotIn
+                  values:
+                    - test
+            topologyKey: kubernetes.io/hostname
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  {{- include "keycloak.selectorLabels" . | nindent 12 }}
+                matchExpressions:
+                  - key: role
+                    operator: NotIn
+                    values:
+                      - test
+              topologyKey: failure-domain.beta.kubernetes.io/zone
+    basepath: auth
+    cli:
+      custom: ""
+      datasource: |
+        {{ .Files.Get "scripts/datasource.cli" }}
+      enabled: true
+      ha: |
+        {{ .Files.Get "scripts/ha.cli" }}
+      logging: |
+        {{ .Files.Get "scripts/logging.cli" }}
+      nodeIdentifier: |
+        {{ .Files.Get "scripts/node-identifier.cli" }}
+    containerSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+    enableServiceLinks: false
+    existingSecret: ""
+    existingSecretKey: password
+    extraArgs: -Dkeycloak.import=/bank-full-users/bank-realm.json
+    extraContainers: ""
+    extraEnv: |
+      # - name: KEYCLOAK_LOGLEVEL
+      #   value: DEBUG
+      # - name: WILDFLY_LOGLEVEL
+      #   value: DEBUG
+      # - name: CACHE_OWNERS
+      #   value: "2"
+      # - name: DB_QUERY_TIMEOUT
+      #   value: "60"
+      # - name: DB_VALIDATE_ON_MATCH
+      #   value: true
+      # - name: DB_USE_CAST_FAIL
+      #   value: false
+    extraInitContainers: ""
+    extraPorts: ""
+    extraVolumeMounts: |
+      - name: bank-full-secret
+        mountPath: "/bank-full-users/"
+        readOnly: true
+    extraVolumes: |
+      - name: bank-full-secret
+        secret:
+          secretName: bank-full-secret
+    hostAliases: []
+    image:
+      pullPolicy: Always
+      pullSecrets: []
+      repository: docker.io/jboss/keycloak
+      tag: ""
+    ingress:
+      annotations: {}
+      enabled: false
+      hosts:
+      - keycloak.example.com
+      labels: {}
+      path: /
+      tls: []
+    javaToolOptions: -XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0
+    jgroups:
+      discoveryProperties: |
+        "dns_query={{ template "keycloak.fullname" . }}-headless.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}"
+      discoveryProtocol: dns.DNS_PING
+      exposePort: true
+    lifecycleHooks: |
+      # postStart:
+      #   exec:
+      #     command: ["/bin/sh", "-c", "ls"]
+    livenessProbe: |
+      httpGet:
+        path: {{ if ne .Values.keycloak.basepath "" }}/{{ .Values.keycloak.basepath }}{{ end }}/
+        port: http
+      initialDelaySeconds: 300
+      timeoutSeconds: 5
+    nodeSelector: {}
+    password: kecske123
+    persistence:
+      dbHost: mykeycloak
+      dbName: keycloak
+      dbPassword: ""
+      dbPort: 5432
+      dbUser: keycloak
+      dbVendor: h2
+      deployPostgres: false
+      existingSecret: ""
+      existingSecretPasswordKey: ""
+      existingSecretUsernameKey: ""
+    podAnnotations: {}
+    podDisruptionBudget: {}
+    podLabels: {}
+    podManagementPolicy: Parallel
+    priorityClassName: ""
+    proxyAddressForwarding: true
+    readinessProbe: |
+      httpGet:
+        path: {{ if ne .Values.keycloak.basepath "" }}/{{ .Values.keycloak.basepath }}{{ end }}/realms/master
+        port: http
+      initialDelaySeconds: 30
+      timeoutSeconds: 1
+    replicas: 1
+    resources: {}
+    restartPolicy: Always
+    route:
+      annotations: {}
+      enabled: false
+      labels: {}
+      path: /
+      tls:
+        enabled: true
+        insecureEdgeTerminationPolicy: Redirect
+        termination: edge
+    securityContext:
+      fsGroup: 1000
+    service:
+      annotations: {}
+      extraPorts: ""
+      httpNodePort: ""
+      httpPort: 80
+      httpsNodePort: ""
+      httpsPort: 8443
+      jgroupsPort: 7600
+      labels: {}
+      type: ClusterIP
+    serviceAccount:
+      create: false
+    startupScripts: {}
+    statefulsetAnnotations: {}
+    terminationGracePeriodSeconds: 60
+    tolerations: []
+    username: keycloak
+  password: kecske123
+  postgresql:
+    commonAnnotiations: {}
+    extraEnv: []
+    global:
+      postgresql: {}
+    image:
+      debug: false
+      pullPolicy: IfNotPresent
+      registry: docker.io
+      repository: bitnami/postgresql
+      tag: 11.7.0-debian-10-r98
+    ldap:
+      baseDN: ""
+      bindDN: ""
+      enabled: false
+      port: ""
+      prefix: ""
+      scheme: ""
+      search_attr: ""
+      search_filter: ""
+      server: ""
+      suffix: ""
+      tls: false
+      url: ""
+    livenessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 30
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    master:
+      affinity: {}
+      annotations: {}
+      extraInitContainers: []
+      extraVolumeMounts: []
+      extraVolumes: []
+      labels: {}
+      nodeSelector: {}
+      podAnnotations: {}
+      podLabels: {}
+      priorityClassName: ""
+      service: {}
+      sidecars: []
+      tolerations: []
+    metrics:
+      enabled: false
+      image:
+        pullPolicy: IfNotPresent
+        registry: docker.io
+        repository: bitnami/postgres-exporter
+        tag: 0.8.0-debian-10-r106
+      livenessProbe:
+        enabled: true
+        failureThreshold: 6
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 5
+      prometheusRule:
+        additionalLabels: {}
+        enabled: false
+        namespace: ""
+        rules: []
+      readinessProbe:
+        enabled: true
+        failureThreshold: 6
+        initialDelaySeconds: 5
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 5
+      securityContext:
+        enabled: false
+        runAsUser: 1001
+      service:
+        annotations:
+          prometheus.io/port: "9187"
+          prometheus.io/scrape: "true"
+        type: ClusterIP
+      serviceMonitor:
+        additionalLabels: {}
+        enabled: false
+    networkPolicy:
+      allowExternal: true
+      enabled: false
+      explicitNamespacesSelector: {}
+    persistence:
+      accessModes:
+      - ReadWriteOnce
+      annotations: {}
+      enabled: false
+      mountPath: /bitnami/postgresql
+      size: 8Gi
+      subPath: ""
+    postgresqlDataDir: /bitnami/postgresql/data
+    postgresqlDatabase: keycloak
+    postgresqlPassword: ""
+    postgresqlUsername: keycloak
+    psp:
+      create: false
+    rbac:
+      create: false
+    readinessProbe:
+      enabled: true
+      failureThreshold: 6
+      initialDelaySeconds: 5
+      periodSeconds: 10
+      successThreshold: 1
+      timeoutSeconds: 5
+    replication:
+      applicationName: my_application
+      enabled: false
+      numSynchronousReplicas: 0
+      password: repl_password
+      slaveReplicas: 1
+      synchronousCommit: "off"
+      user: repl_user
+    resources:
+      requests:
+        cpu: 250m
+        memory: 256Mi
+    securityContext:
+      enabled: true
+      fsGroup: 1001
+      runAsUser: 1001
+    service:
+      annotations: {}
+      port: 5432
+      type: ClusterIP
+    serviceAccount:
+      enabled: false
+    shmVolume:
+      chmod:
+        enabled: true
+      enabled: true
+    slave:
+      affinity: {}
+      annotations: {}
+      extraInitContainers: |
+        # - name: do-something
+        #   image: busybox
+        #   command: ['do', 'something']
+      extraVolumeMounts: []
+      extraVolumes: []
+      labels: {}
+      nodeSelector: {}
+      podAnnotations: {}
+      podLabels: {}
+      priorityClassName: ""
+      service: {}
+      sidecars: []
+      tolerations: []
+    updateStrategy:
+      type: RollingUpdate
+    volumePermissions:
+      enabled: false
+      image:
+        pullPolicy: Always
+        registry: docker.io
+        repository: bitnami/minideb
+        tag: buster
+      securityContext:
+        runAsUser: 0
+  prometheus:
+    operator:
+      enabled: false
+      prometheusRules:
+        enabled: false
+        rules: {}
+        selector:
+          app: prometheus-operator
+          release: prometheus
+      serviceMonitor:
+        interval: 10s
+        namespace: ""
+        path: /auth/realms/master/metrics
+        scrapeTimeout: 10s
+        selector:
+          release: prometheus
+  pullPolicy: IfNotPresent
+  replicas: 1
+  tag: ""
+  test:
+    containerSecurityContext:
+      runAsNonRoot: true
+      runAsUser: 1000
+    enabled: true
+    image:
+      pullPolicy: IfNotPresent
+      repository: unguiculus/docker-python3-phantomjs-selenium
+      tag: v1
+    securityContext:
+      fsGroup: 1000
+  username: keycloak
+my-rabbitmq:
+  affinity: {}
+  extraSecrets: {}
+  extraVolumeMounts: []
+  extraVolumes: []
+  forceBoot:
+    enabled: false
+  global: {}
+  image:
+    debug: false
+    pullPolicy: IfNotPresent
+    registry: docker.io
+    repository: bitnami/rabbitmq
+    tag: 3.8.3-debian-10-r79
+  ingress:
+    annotations: {}
+    enabled: false
+    path: /
+    tls: false
+    tlsSecret: myTlsSecret
+  ldap:
+    enabled: false
+    port: "389"
+    server: ""
+    tls:
+      enabled: false
+    user_dn_pattern: cn=${username},dc=example,dc=org
+  livenessProbe:
+    commandOverride: []
+    enabled: true
+    failureThreshold: 6
+    initialDelaySeconds: 120
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 20
+  metrics:
+    enabled: false
+    plugins: rabbitmq_prometheus
+    podAnnotations:
+      prometheus.io/port: '{{ .Values.metrics.port }}'
+      prometheus.io/scrape: "true"
+    port: 9419
+    prometheusRule:
+      additionalLabels: {}
+      enabled: false
+      namespace: ""
+      rules: []
+    serviceMonitor:
+      additionalLabels: {}
+      enabled: false
+      honorLabels: false
+      interval: 30s
+  networkPolicy:
+    allowExternal: true
+    enabled: false
+  nodeSelector: {}
+  persistence:
+    accessMode: ReadWriteOnce
+    enabled: true
+    path: /opt/bitnami/rabbitmq/var/lib/rabbitmq
+    size: 8Gi
+  podAnnotations: {}
+  podDisruptionBudget: {}
+  podLabels: {}
+  podManagementPolicy: OrderedReady
+  rabbitmq:
+    advancedConfiguration: ""
+    clustering:
+      address_type: hostname
+      k8s_domain: cluster.local
+      rebalance: false
+    configuration: |-
+      ## Clustering
+      cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
+      cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
+      cluster_formation.node_cleanup.interval = 10
+      cluster_formation.node_cleanup.only_log_warning = true
+      cluster_partition_handling = autoheal
+      # queue master locator
+      queue_master_locator=min-masters
+      # enable guest user
+      loopback_users.guest = false
+    env: {}
+    extraConfiguration: |-
+      #disk_free_limit.absolute = 50MB
+      #management.load_definitions = /app/load_definition.json
+    extraPlugins: rabbitmq_auth_backend_ldap
+    loadDefinition:
+      enabled: false
+      secretName: load-definition
+    logs: '-'
+    plugins: rabbitmq_management rabbitmq_peer_discovery_k8s
+    setUlimitNofiles: true
+    tls:
+      caCertificate: ""
+      enabled: false
+      failIfNoPeerCert: true
+      serverCertificate: ""
+      serverKey: ""
+      sslOptionsVerify: verify_peer
+    ulimitNofiles: "65536"
+    username: user
+  rbacEnabled: true
+  readinessProbe:
+    commandOverride: []
+    enabled: true
+    failureThreshold: 3
+    initialDelaySeconds: 10
+    periodSeconds: 30
+    successThreshold: 1
+    timeoutSeconds: 20
+  replicas: 1
+  resources: {}
+  securityContext:
+    enabled: true
+    extra: {}
+    fsGroup: 1001
+    runAsUser: 1001
+  service:
+    annotations: {}
+    distPort: 25672
+    labels: {}
+    managerPort: 15672
+    port: 5672
+    tlsPort: 5671
+    type: ClusterIP
+  tolerations: {}
+  updateStrategy:
+    type: RollingUpdate
+  volumePermissions:
+    enabled: false
+    image:
+      pullPolicy: Always
+      registry: docker.io
+      repository: bitnami/minideb
+      tag: buster
+    resources: {}
+rabbitmq:
+  rabbitmq:
+    password: XAZvBI2Mfb
+    username: user
+
+HOOKS:
+---
+# Source: bank-app-root-chart/charts/atm-chart/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "bank-app-atm-chart-test-connection"
+  labels:
+    helm.sh/chart: atm-chart-0.1.0
+    app.kubernetes.io/name: atm-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['bank-app-atm-chart:8001']
+  restartPolicy: Never
+---
+# Source: bank-app-root-chart/charts/bank-chart/templates/tests/test-connection.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "bank-app-bank-chart-test-connection"
+  labels:
+    helm.sh/chart: bank-chart-0.1.0
+    app.kubernetes.io/name: bank-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  containers:
+    - name: wget
+      image: busybox
+      command: ['wget']
+      args: ['bank-app-bank-chart:8081']
+  restartPolicy: Never
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/test/pod-test.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "bank-app-my-keycloak-test-7ffbk"
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+    role: test
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  securityContext:
+    fsGroup: 1000
+  containers:
+    - name: my-keycloak-test
+      image: "unguiculus/docker-python3-phantomjs-selenium:v1"
+      imagePullPolicy: IfNotPresent
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      command:
+        - python3
+        - /tests/test.py
+      env:
+        - name: KEYCLOAK_USER
+          value: keycloak
+        - name: KEYCLOAK_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: bank-app-my-keycloak-http
+              key: password
+      volumeMounts:
+        - name: tests
+          mountPath: /tests
+  volumes:
+    - name: tests
+      configMap:
+        name: bank-app-my-keycloak-test
+  restartPolicy: Never
+MANIFEST:
+---
+# Source: bank-app-root-chart/charts/atm-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bank-app-atm-chart
+  labels:
+    helm.sh/chart: atm-chart-0.1.0
+    app.kubernetes.io/name: atm-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: bank-app-root-chart/charts/bank-chart/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bank-app-bank-chart
+  labels:
+    helm.sh/chart: bank-chart-0.1.0
+    app.kubernetes.io/name: bank-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: bank-app-root-chart/charts/mongodb/templates/serviceaccount.yml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bank-app-mongodb
+  namespace: default
+  labels:
+    app: mongodb
+    chart: mongodb-7.13.0
+    release: "bank-app"
+    heritage: "Helm"
+secrets:
+  - name: bank-app-mongodb
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: bank-app-my-rabbitmq
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+secrets:
+  - name: "bank-app-my-rabbitmq"
+---
+# Source: bank-app-root-chart/charts/mongodb/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bank-app-mongodb
+  namespace: default
+  labels:
+    app: mongodb
+    chart: mongodb-7.13.0
+    release: "bank-app"
+    heritage: "Helm"
+type: Opaque
+data:
+  mongodb-root-password: "ZHBIenhzOWw0Qg=="
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/secret-db.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bank-app-my-keycloak-db
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  password: ""
+  username: "a2V5Y2xvYWs="
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/secret-keycloak.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bank-app-my-keycloak-http
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+type: Opaque
+data:
+  password: "a2Vjc2tlMTIz"
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bank-app-my-rabbitmq
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+type: Opaque
+data:
+  
+  rabbitmq-password: "MzFWODIzUFdERg=="
+  
+  
+  rabbitmq-erlang-cookie: "R3FSMjloZndWRWtKOTE5TGxMdkxnR3F2a3VEZ0s3VlE="
+---
+# Source: bank-app-root-chart/charts/mongodb/templates/initialization-configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-app-mongodb-init-scripts
+  namespace: default
+  labels:
+    app: mongodb
+    chart: mongodb-7.13.0
+    release: "bank-app"
+    heritage: "Helm"
+data:
+  init.js: |
+    use bank;
+    db.createUser({user: "bank", pwd: "bank123", roles:[{role:"readWrite", db: "bank"}]});
+    use bank;
+    db.balance.drop();
+    db.balance.createIndex( { "user": 1 }, { unique: true } );
+    db.balance.insert({"user": "testUser1","amount":100,"_class" : "mentoring.epam.bank.domain.Balance"});
+    db.balance.insert({"user": "testUser2","amount":111,"_class" : "mentoring.epam.bank.domain.Balance"});
+    db.balance.insert({"user": "testUser3","amount":222,"_class" : "mentoring.epam.bank.domain.Balance"});
+    db.balance.insert({"user": "testUser4","amount":333,"_class" : "mentoring.epam.bank.domain.Balance"});
+    db.balance.insert({"user": "testUser5","amount":444,"_class" : "mentoring.epam.bank.domain.Balance"});
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/configmap-sh.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-app-my-keycloak-sh
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  keycloak.sh: |
+    #!/usr/bin/env bash
+
+    set -o errexit
+    set -o nounset
+
+    exec /opt/jboss/tools/docker-entrypoint.sh -b 0.0.0.0 -Dkeycloak.import=/bank-full-users/bank-realm.json -c standalone.xml
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/configmap-startup.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-app-my-keycloak-startup
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  keycloak.cli: |
+    embed-server --std-out=echo
+    batch
+    ## Sets the node identifier to the node name (= pod name). Node identifiers have to be unique. They can have a
+    ## maximum length of 23 characters. Thus, the chart's fullname template truncates its length accordingly.
+    /subsystem=transactions:write-attribute(name=node-identifier, value=${jboss.node.name})
+    
+    
+    # Allow log level to be configured via environment variable
+    /subsystem=logging/console-handler=CONSOLE:write-attribute(name=level, value=${env.WILDFLY_LOGLEVEL:INFO})
+    /subsystem=logging/root-logger=ROOT:write-attribute(name=level, value=${env.WILDFLY_LOGLEVEL:INFO})
+    
+    # Add dedicated eventsListener config element to allow configuring elements.
+    /subsystem=keycloak-server/spi=eventsListener:add()
+    /subsystem=keycloak-server/spi=eventsListener/provider=jboss-logging:add(enabled=true)
+    
+    # Propagate success events to INFO instead of DEBUG, to expose successful logins for log analysis
+    /subsystem=keycloak-server/spi=eventsListener/provider=jboss-logging:write-attribute(name=properties.success-level,value=info)
+    /subsystem=keycloak-server/spi=eventsListener/provider=jboss-logging:write-attribute(name=properties.error-level,value=warn)
+    
+    
+    # Configure datasource to use explicit query timeout in seconds
+    /subsystem=datasources/data-source=KeycloakDS/:write-attribute(name=query-timeout,value=${env.DB_QUERY_TIMEOUT:300})
+    
+    # Configure datasource to connection before use
+    /subsystem=datasources/data-source=KeycloakDS/:write-attribute(name=validate-on-match,value=${env.DB_VALIDATE_ON_MATCH:true})
+    
+    # Configure datasource to try all other connections before failing
+    /subsystem=datasources/data-source=KeycloakDS/:write-attribute(name=use-fast-fail,value=${env.DB_USE_CAST_FAIL:false})
+    
+    
+
+    run-batch
+    stop-embedded-server
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/test/configmap-test.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-app-my-keycloak-test
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+data:
+  test.py: |
+    import os
+    from selenium import webdriver
+    from selenium.webdriver.common.by import By
+    from selenium.webdriver.support.ui import WebDriverWait
+    from selenium.webdriver.support import expected_conditions
+    from urllib.parse import urlparse
+
+    print('Creating PhantomJS driver...')
+    driver = webdriver.PhantomJS(service_log_path='/tmp/ghostdriver.log')
+
+    base_url = 'http://bank-app-my-keycloak-http'
+
+    print('Opening Keycloak...')
+    driver.get('{0}/auth/admin/'.format(base_url))
+
+    username = os.environ['KEYCLOAK_USER']
+    password = os.environ['KEYCLOAK_PASSWORD']
+
+    username_input = WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "username")))
+    password_input = WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "password")))
+    login_button = WebDriverWait(driver, 30).until(expected_conditions.presence_of_element_located((By.ID, "kc-login")))
+
+    print('Entering username...')
+    username_input.send_keys(username)
+
+    print('Entering password...')
+    password_input.send_keys(password)
+
+    print('Clicking login button...')
+    login_button.click()
+
+    current_url = urlparse(driver.current_url)
+    expected_url = urlparse('{0}/auth/admin/master/console/'.format(base_url))
+
+    print('Current URL: {0}'.format(current_url))
+    print('Expected URL: {0}'.format(expected_url))
+
+    if current_url.path != expected_url.path:
+        print('Login failed. Current url is not expected url')
+        exit(1)
+
+    print('URLs match. Login successful.')
+
+    driver.quit()
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/configuration.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-app-my-rabbitmq-config
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+data:
+  enabled_plugins: |-
+    [rabbitmq_management, rabbitmq_peer_discovery_k8s, rabbitmq_auth_backend_ldap].
+  rabbitmq.conf: |-
+    ##username and password
+    default_user=user
+    default_pass=CHANGEME
+    ## Clustering
+    cluster_formation.peer_discovery_backend  = rabbit_peer_discovery_k8s
+    cluster_formation.k8s.host = kubernetes.default.svc.cluster.local
+    cluster_formation.node_cleanup.interval = 10
+    cluster_formation.node_cleanup.only_log_warning = true
+    cluster_partition_handling = autoheal
+    # queue master locator
+    queue_master_locator=min-masters
+    # enable guest user
+    loopback_users.guest = false
+    #disk_free_limit.absolute = 50MB
+    #management.load_definitions = /app/load_definition.json
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/healthchecks.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bank-app-my-rabbitmq-healthchecks
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+data:
+  rabbitmq-health-check: |-
+    #!/bin/sh
+    START_FLAG=/opt/bitnami/rabbitmq/var/lib/rabbitmq/.start
+    if [ -f ${START_FLAG} ]; then
+        rabbitmqctl node_health_check
+        RESULT=$?
+        if [ $RESULT -ne 0 ]; then
+          rabbitmqctl status
+          exit $?
+        fi
+        rm -f ${START_FLAG}
+        exit ${RESULT}
+    fi
+    rabbitmq-api-check $1 $2
+  rabbitmq-api-check: |-
+    #!/bin/sh
+    set -e
+    URL=$1
+    EXPECTED=$2
+    ACTUAL=$(curl --silent --show-error --fail "${URL}")
+    echo "${ACTUAL}"
+    test "${EXPECTED}" = "${ACTUAL}"
+---
+# Source: bank-app-root-chart/charts/mongodb/templates/pvc-standalone.yaml
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  labels:
+    app: mongodb
+    chart: mongodb-7.13.0
+    heritage: Helm
+    release: bank-app
+  name: bank-app-mongodb
+  namespace: default
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "8Gi"
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/role.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: bank-app-my-rabbitmq-endpoint-reader
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+rules:
+  - apiGroups: [""]
+    resources: ["endpoints"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["events"]
+    verbs: ["create"]
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/rolebinding.yaml
+kind: RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: bank-app-my-rabbitmq-endpoint-reader
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+subjects:
+  - kind: ServiceAccount
+    name: bank-app-my-rabbitmq
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: bank-app-my-rabbitmq-endpoint-reader
+---
+# Source: bank-app-root-chart/charts/atm-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-app-atm-chart
+  labels:
+    helm.sh/chart: atm-chart-0.1.0
+    app.kubernetes.io/name: atm-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8001
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: atm-chart
+    app.kubernetes.io/instance: bank-app
+---
+# Source: bank-app-root-chart/charts/bank-chart/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-app-bank-chart
+  labels:
+    helm.sh/chart: bank-chart-0.1.0
+    app.kubernetes.io/name: bank-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8081
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: bank-chart
+    app.kubernetes.io/instance: bank-app
+---
+# Source: bank-app-root-chart/charts/mongodb/templates/svc-standalone.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-app-mongodb
+  namespace: default
+  labels:
+    app: mongodb
+    chart: mongodb-7.13.0
+    release: "bank-app"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - name: mongodb
+      port: 27017
+      targetPort: mongodb
+  selector:
+    app: mongodb
+    release: "bank-app"
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/service-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-app-my-keycloak-headless
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+    service: headless
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
+    - name: https
+      port: 8443
+      targetPort: https
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/service-http.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-app-my-keycloak-http
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+    service: http
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+      targetPort: http
+      protocol: TCP
+    - name: https
+      port: 8443
+      targetPort: https
+      protocol: TCP
+  selector:
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-app-my-rabbitmq-headless
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+spec:
+  clusterIP: None
+  ports:
+    - name: epmd
+      port: 4369
+      targetPort: epmd
+    - name: amqp
+      port: 5672
+      targetPort: amqp
+    - name: dist
+      port: 25672
+      targetPort: dist
+    - name: stats
+      port: 15672
+      targetPort: stats
+  selector:
+    app: my-rabbitmq
+    release: "bank-app"
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: bank-app-my-rabbitmq
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+spec:
+  type: ClusterIP
+  ports:
+    - name: epmd
+      port: 4369
+      targetPort: epmd
+      nodePort: null
+    - name: amqp
+      port: 5672
+      targetPort: amqp
+      nodePort: null
+    - name: dist
+      port: 25672
+      targetPort: dist
+      nodePort: null
+    - name: stats
+      port: 15672
+      targetPort: stats
+      nodePort: null
+  selector:
+    app: my-rabbitmq
+    release: "bank-app"
+---
+# Source: bank-app-root-chart/charts/atm-chart/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-app-atm-chart
+  labels:
+    helm.sh/chart: atm-chart-0.1.0
+    app.kubernetes.io/name: atm-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: atm-chart
+      app.kubernetes.io/instance: bank-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: atm-chart
+        app.kubernetes.io/instance: bank-app
+    spec:
+      serviceAccountName: bank-app-atm-chart
+      securityContext:
+        {}
+      containers:
+        - name: atm-chart
+          securityContext:
+            {}
+          image: "hobbikertesz17/atm:kecske"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8001
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8001
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8001
+          resources:
+            {}
+---
+# Source: bank-app-root-chart/charts/bank-chart/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-app-bank-chart
+  labels:
+    helm.sh/chart: bank-chart-0.1.0
+    app.kubernetes.io/name: bank-chart
+    app.kubernetes.io/instance: bank-app
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bank-chart
+      app.kubernetes.io/instance: bank-app
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: bank-chart
+        app.kubernetes.io/instance: bank-app
+    spec:
+      serviceAccountName: bank-app-bank-chart
+      securityContext:
+        {}
+      containers:
+        - name: bank-chart
+          securityContext:
+            {}
+          image: "hobbikertesz17/bank:kecske"
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8085
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8085
+          readinessProbe:
+            initialDelaySeconds: 10
+            httpGet:
+              path: /actuator/health
+              port: 8085
+          resources:
+            {}
+---
+# Source: bank-app-root-chart/charts/mongodb/templates/deployment-standalone.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-app-mongodb
+  namespace: default
+  labels:
+    app: mongodb
+    chart: mongodb-7.13.0
+    release: "bank-app"
+    heritage: "Helm"
+spec:
+  strategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: mongodb
+      release: "bank-app"
+  template:
+    metadata:
+      labels:
+        app: mongodb
+        release: "bank-app"
+        chart: mongodb-7.13.0
+    spec:
+      serviceAccountName: bank-app-mongodb
+      securityContext:
+        fsGroup: 1001      
+      initContainers:
+      containers:
+        - name: bank-app-mongodb
+          image: docker.io/bitnami/mongodb:4.2.6-debian-10-r13
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1001
+          env:
+            - name: MONGODB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bank-app-mongodb
+                  key: mongodb-root-password
+            - name: MONGODB_SYSTEM_LOG_VERBOSITY
+              value: "0"
+            - name: MONGODB_DISABLE_SYSTEM_LOG
+              value: "no"
+            - name: MONGODB_ENABLE_IPV6
+              value: "no"
+            - name: MONGODB_ENABLE_DIRECTORY_PER_DB
+              value: "no"
+          ports:
+            - name: mongodb
+              containerPort: 27017
+          livenessProbe:
+            exec:
+              command:
+                - mongo
+                - --eval
+                - "db.adminCommand('ping')"
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - mongo
+                - --eval
+                - "db.adminCommand('ping')"
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/mongodb
+              subPath: 
+            - name: custom-init-scripts
+              mountPath: /docker-entrypoint-initdb.d
+          resources:
+            {}
+      volumes:
+        - name: custom-init-scripts
+          configMap:
+            name: bank-app-mongodb-init-scripts
+        - name: data
+          persistentVolumeClaim:
+            claimName: bank-app-mongodb
+---
+# Source: bank-app-root-chart/charts/my-keycloak/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bank-app-my-keycloak
+  labels:
+    helm.sh/chart: my-keycloak-8.1.0
+    app.kubernetes.io/name: my-keycloak
+    app.kubernetes.io/instance: "bank-app"
+    app.kubernetes.io/version: "10.0.0"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: my-keycloak
+      app.kubernetes.io/instance: "bank-app"
+  replicas: 1
+  serviceName: bank-app-my-keycloak-headless
+  podManagementPolicy: Parallel
+  updateStrategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: my-keycloak
+        app.kubernetes.io/instance: "bank-app"
+      annotations:
+        checksum/config-sh: 03b4746e41f54711f485a975f5c39040bde498252ac6bada271ea5df10fc8ca7
+        checksum/config-startup: 18505b24ad98224b991c89f92b4613df0d4706224cca9ccd6de056c7861d5eec
+    spec:
+      restartPolicy: Always
+      serviceAccountName: default
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: my-keycloak
+          image: "docker.io/jboss/keycloak:10.0.0"
+          imagePullPolicy: Always
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+          command:
+            - /scripts/keycloak.sh
+          lifecycle:
+            # postStart:
+            #   exec:
+            #     command: ["/bin/sh", "-c", "ls"]
+            
+          env:
+            - name: KEYCLOAK_USER
+              value: keycloak
+            - name: KEYCLOAK_PASSWORD_FILE
+              value: /secrets/password
+            - name: JAVA_TOOL_OPTIONS
+              value: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=50.0"
+            - name: PROXY_ADDRESS_FORWARDING
+              value: "true"
+            
+            - name: DB_VENDOR
+              value: "h2"
+            # - name: KEYCLOAK_LOGLEVEL
+            #   value: DEBUG
+            # - name: WILDFLY_LOGLEVEL
+            #   value: DEBUG
+            # - name: CACHE_OWNERS
+            #   value: "2"
+            # - name: DB_QUERY_TIMEOUT
+            #   value: "60"
+            # - name: DB_VALIDATE_ON_MATCH
+            #   value: true
+            # - name: DB_USE_CAST_FAIL
+            #   value: false
+            
+          volumeMounts:
+            - name: sh
+              mountPath: /scripts
+              readOnly: true
+            - name: secrets
+              mountPath: /secrets
+              readOnly: true
+            - name: startup
+              mountPath: /opt/jboss/startup-scripts
+              readOnly: true
+            - name: bank-full-secret
+              mountPath: "/bank-full-users/"
+              readOnly: true
+            
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: https
+              containerPort: 8443
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /auth/
+              port: http
+            initialDelaySeconds: 300
+            timeoutSeconds: 5
+            
+          readinessProbe:
+            httpGet:
+              path: /auth/realms/master
+              port: http
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+            
+          resources:
+            {}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app.kubernetes.io/name: my-keycloak
+                  app.kubernetes.io/instance: "bank-app"
+                matchExpressions:
+                  - key: role
+                    operator: NotIn
+                    values:
+                      - test
+              topologyKey: kubernetes.io/hostname
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: my-keycloak
+                    app.kubernetes.io/instance: "bank-app"
+                  matchExpressions:
+                    - key: role
+                      operator: NotIn
+                      values:
+                        - test
+                topologyKey: failure-domain.beta.kubernetes.io/zone
+        
+      terminationGracePeriodSeconds: 60
+      volumes:
+        - name: sh
+          configMap:
+            name: bank-app-my-keycloak-sh
+            defaultMode: 0555
+        - name: secrets
+          secret:
+            secretName: bank-app-my-keycloak-http
+        - name: startup
+          configMap:
+            name: bank-app-my-keycloak-startup
+            defaultMode: 0555
+        - name: bank-full-secret
+          secret:
+            secretName: bank-full-secret
+---
+# Source: bank-app-root-chart/charts/my-rabbitmq/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: bank-app-my-rabbitmq
+  namespace: default
+  labels:
+    app: my-rabbitmq
+    chart: my-rabbitmq-6.25.11
+    release: "bank-app"
+    heritage: "Helm"
+spec:
+  serviceName: bank-app-my-rabbitmq-headless
+  podManagementPolicy: OrderedReady
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: my-rabbitmq
+      release: "bank-app"
+  template:
+    metadata:
+      labels:
+        app: my-rabbitmq
+        release: "bank-app"
+        chart: my-rabbitmq-6.25.11
+      annotations:
+        checksum/secret: ba19aa4b911b0b6c0c177815840d7eb356416fdaf15d9c21579e4fa3744b5955
+    spec:      
+      serviceAccountName: bank-app-my-rabbitmq
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: rabbitmq
+          image: docker.io/bitnami/rabbitmq:3.8.3-debian-10-r79
+          imagePullPolicy: "IfNotPresent"
+          command:
+            - bash
+            - -ec
+            - |
+               mkdir -p /opt/bitnami/rabbitmq/.rabbitmq/
+               mkdir -p /opt/bitnami/rabbitmq/etc/rabbitmq/
+               touch /opt/bitnami/rabbitmq/var/lib/rabbitmq/.start
+               #persist the erlang cookie in both places for server and cli tools
+               echo $RABBITMQ_ERL_COOKIE > /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie
+               cp /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie /opt/bitnami/rabbitmq/.rabbitmq/
+               #change permission so only the user has access to the cookie file
+               chmod 600 /opt/bitnami/rabbitmq/.rabbitmq/.erlang.cookie /opt/bitnami/rabbitmq/var/lib/rabbitmq/.erlang.cookie
+               #copy the mounted configuration to both places
+               cp  /opt/bitnami/rabbitmq/conf/* /opt/bitnami/rabbitmq/etc/rabbitmq
+               # Apply resources limits
+               ulimit -n "${RABBITMQ_ULIMIT_NOFILES}"
+               #replace the default password that is generated
+               sed -i "/CHANGEME/cdefault_pass=${RABBITMQ_PASSWORD//\\/\\\\}" /opt/bitnami/rabbitmq/etc/rabbitmq/rabbitmq.conf
+               exec rabbitmq-server
+          volumeMounts:
+            - name: config-volume
+              mountPath: /opt/bitnami/rabbitmq/conf
+            - name: healthchecks
+              mountPath: /usr/local/sbin/rabbitmq-api-check
+              subPath: rabbitmq-api-check
+            - name: healthchecks
+              mountPath: /usr/local/sbin/rabbitmq-health-check
+              subPath: rabbitmq-health-check
+            - name: data
+              mountPath: "/opt/bitnami/rabbitmq/var/lib/rabbitmq"
+          ports:
+            - name: epmd
+              containerPort: 4369
+            - name: amqp
+              containerPort: 5672
+            - name: dist
+              containerPort: 25672
+            - name: stats
+              containerPort: 15672
+          livenessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - rabbitmq-api-check "http://user:$RABBITMQ_PASSWORD@127.0.0.1:15672/api/healthchecks/node" '{"status":"ok"}'
+            initialDelaySeconds: 120
+            timeoutSeconds: 20
+            periodSeconds: 30
+            failureThreshold: 6
+            successThreshold: 1
+          readinessProbe:
+            exec:
+              command:
+                - sh
+                - -c
+                - rabbitmq-health-check "http://user:$RABBITMQ_PASSWORD@127.0.0.1:15672/api/healthchecks/node" '{"status":"ok"}'
+            initialDelaySeconds: 10
+            timeoutSeconds: 20
+            periodSeconds: 30
+            failureThreshold: 3
+            successThreshold: 1
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: MY_POD_IP
+              valueFrom:
+                fieldRef:
+                  fieldPath: status.podIP
+            - name: MY_POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MY_POD_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: K8S_SERVICE_NAME
+              value: "bank-app-my-rabbitmq-headless"
+            - name: K8S_ADDRESS_TYPE
+              value: hostname
+            - name: RABBITMQ_NODENAME
+              value: "rabbit@$(MY_POD_NAME).$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+            - name: K8S_HOSTNAME_SUFFIX
+              value: ".$(K8S_SERVICE_NAME).$(MY_POD_NAMESPACE).svc.cluster.local"
+            - name: RABBITMQ_LOGS
+              value: "-"
+            - name: RABBITMQ_ULIMIT_NOFILES
+              value: "65536"
+            - name: RABBITMQ_USE_LONGNAME
+              value: "true"
+            - name: RABBITMQ_ERL_COOKIE
+              valueFrom:
+                secretKeyRef:
+                  name: bank-app-my-rabbitmq
+                  key: rabbitmq-erlang-cookie
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bank-app-my-rabbitmq
+                  key: rabbitmq-password
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+      volumes:
+        - name: config-volume
+          configMap:
+            name: bank-app-my-rabbitmq-config
+            items:
+              - key: rabbitmq.conf
+                path: rabbitmq.conf
+              - key: enabled_plugins
+                path: enabled_plugins
+        - name: healthchecks
+          configMap:
+            name: bank-app-my-rabbitmq-healthchecks
+            items:
+              - key: rabbitmq-health-check
+                path: rabbitmq-health-check
+                mode: 111
+              - key: rabbitmq-api-check
+                path: rabbitmq-api-check
+                mode: 111
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+        labels:
+          app: my-rabbitmq
+          release: "bank-app"
+          heritage: "Helm"
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+

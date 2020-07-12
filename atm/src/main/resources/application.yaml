@@ -6,7 +6,7 @@ server:
 
 keycloak:
   realm: bank
-  auth-server-url: http://${BANK_APP_KEYCLOAK_HTTP_SERVICE_HOST:localhost}:${BANK_APP_KEYCLOAK_HTTP_SERVICE_PORT_HTTP:8080}/auth
+  auth-server-url: http://my-minikube:30598/auth
   resource: product-app
   public-client: true
   enabled: true
