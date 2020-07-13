@@ -37,11 +37,11 @@ public class BankController {
         }
     }
 
-    @PostMapping("/deposit")
-    TransactionResponse depositCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) throws AuthenticationException {
-
-        return validate(token).getBody().getActive().booleanValue() ? bank.depositCash(transaction) : null;
-    }
+//    @PostMapping("/deposit")
+//    TransactionResponse depositCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) throws AuthenticationException {
+//
+//        return validate(token).getBody().getActive().booleanValue() ? bank.depositCash(transaction) : null;
+//    }
 
     @PostMapping("/balance")
     ResponseEntity<Balance> balance(@RequestHeader(AUTHORIZATION) String token, @RequestBody String username) throws AuthenticationException {
@@ -55,9 +55,9 @@ public class BankController {
         return validate(token).getBody().getActive().booleanValue() ? bank.getAllBalance() : new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PostMapping("/withdraw")
-    TransactionResponse withdrawCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) throws AuthenticationException {
-
-        return validate(token).getBody().getActive().booleanValue() ? bank.withdrawCash(transaction) : null;
-    }
+//    @PostMapping("/withdraw")
+//    TransactionResponse withdrawCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) throws AuthenticationException {
+//
+//        return validate(token).getBody().getActive().booleanValue() ? bank.withdrawCash(transaction) : null;
+//    }
 }

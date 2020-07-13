@@ -35,9 +35,10 @@ public class RabbitmqListenerBank {
         if (WITHDRAW.equals(routeKey)) {
 
             Transaction transaction = (Transaction) SerializationUtils.deserialize(message.getBody());
-            rabbitmqSenderBank.send(bank.withdrawCash(transaction), RabbitmqRouteNames.WITHDRAW.name());
+            TransactionResponse transactionResponse = bank.withdraw(transaction);
+            rabbitmqSenderBank.send(transactionResponse, RabbitmqRouteNames.WITHDRAW.name());
 
-            TransactionResponse responseResponseEntity = bank.withdrawCash(transaction);
+            TransactionResponse responseResponseEntity = transactionResponse;
 
             if (!Objects.isNull(responseResponseEntity)) {
                 rabbitmqSenderBank.send(responseResponseEntity, RabbitmqRouteNames.DEPOSIT.name());
@@ -47,7 +48,8 @@ public class RabbitmqListenerBank {
         } else if (DEPOSIT.equals(routeKey)) {
 
             Transaction transaction = (Transaction) SerializationUtils.deserialize(message.getBody());
-            TransactionResponse responseResponseEntity = bank.depositCash(transaction);
+
+            TransactionResponse responseResponseEntity = bank.deposit(transaction);
 
             if (!Objects.isNull(responseResponseEntity)) {
                 rabbitmqSenderBank.send(responseResponseEntity, RabbitmqRouteNames.DEPOSIT.name());
