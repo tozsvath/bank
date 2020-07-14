@@ -19,23 +19,21 @@ import java.util.List;
 public class Bank {
 
     private final BalanceRepository balanceRepository;
-    private final TransactionBroker transactionBroker;
 
     @Autowired
-    public Bank(BalanceRepository balanceRepository, TransactionBroker transactionBroker) {
+    public Bank(BalanceRepository balanceRepository) {
         this.balanceRepository = balanceRepository;
-        this.transactionBroker = transactionBroker;
     }
 
     public TransactionResponse withdraw(Transaction transaction){
 
         Withdraw withdraw = new Withdraw(balanceRepository,transaction);
-        return transactionBroker.executeTransaction(withdraw);
+        return withdraw.executeTransaction();
     }
 
     public TransactionResponse deposit(Transaction transaction){
         Deposit deposit = new Deposit(balanceRepository,transaction);
-        return transactionBroker.executeTransaction(deposit);
+        return deposit.executeTransaction();
     }
 
     public ResponseEntity<Balance> getBalance(String username) {
@@ -50,7 +48,6 @@ public class Bank {
         } catch (MongoException mongoException) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-
         return new ResponseEntity<>(balance, headers, httpStatus);
     }
 
@@ -66,7 +63,6 @@ public class Bank {
         } catch (MongoException mongoException) {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
-
         return new ResponseEntity<>(balance, headers, httpStatus);
     }
 }

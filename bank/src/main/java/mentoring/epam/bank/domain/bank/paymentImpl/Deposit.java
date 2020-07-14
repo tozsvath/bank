@@ -5,16 +5,12 @@ import mentoring.epam.bank.commons.domain.bank.Balance;
 import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
 import mentoring.epam.bank.domain.bank.Payment;
+import mentoring.epam.bank.domain.bank.paymentImpl.constants.PaymentConstants;
 import mentoring.epam.bank.repository.mongodb.BalanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 
 public class Deposit implements Payment {
-    private static final String ERROR = "ERROR";
-    private static final String OK = "OK";
-    private static final String IS_TRANSACTION_SUCCESSFUL = "IsTransactionSuccessfull";
-    public static final String ID = "0";
-
 
     private BalanceRepository balanceRepository;
     private Transaction transaction;
@@ -40,17 +36,17 @@ public class Deposit implements Payment {
             }
             balanceRepository.save(balance);
 
-            transactionResponse = new TransactionResponse(ID, transaction.getUser(), balance.getAmount(), OK);
+            transactionResponse = new TransactionResponse(PaymentConstants.ID, transaction.getUser(), balance.getAmount(), PaymentConstants.OK);
 
-            status = OK;
+            status = PaymentConstants.OK;
 
         } catch (MongoException mongoException) {
 
             status = mongoException.getMessage();
-            transactionResponse = new TransactionResponse(ID, transaction.getUser(), null, ERROR);
+            transactionResponse = new TransactionResponse(PaymentConstants.ID, transaction.getUser(), null, PaymentConstants.ERROR);
         }
 
-        headers.add(IS_TRANSACTION_SUCCESSFUL, status);
+        headers.add(PaymentConstants.IS_TRANSACTION_SUCCESSFUL, status);
 
         return transactionResponse;
     }

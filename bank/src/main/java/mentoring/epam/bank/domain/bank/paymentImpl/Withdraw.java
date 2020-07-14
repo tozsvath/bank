@@ -5,20 +5,12 @@ import mentoring.epam.bank.commons.domain.bank.Balance;
 import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
 import mentoring.epam.bank.domain.bank.Payment;
+import mentoring.epam.bank.domain.bank.paymentImpl.constants.PaymentConstants;
 import mentoring.epam.bank.repository.mongodb.BalanceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 
 public class Withdraw implements Payment {
-
-    private static final String ERROR = "ERROR";
-    private static final String OK = "OK";
-    private static final String IS_TRANSACTION_SUCCESSFUL = "IsTransactionSuccessfull";
-    private static final String NOT_ENOUGH_FOUNDS = "Not enough founds.";
-    private static final String NOT_FOUND = "Not user found with this name";
-    public static final String ID = "0";
-
 
     private BalanceRepository balanceRepository;
     private Transaction transaction;
@@ -33,7 +25,6 @@ public class Withdraw implements Payment {
     public TransactionResponse executeTransaction() {
 
         HttpHeaders headers = new HttpHeaders();
-        HttpStatus httpStatus;
         String status;
         TransactionResponse transactionResponse = null;
 
@@ -46,27 +37,23 @@ public class Withdraw implements Payment {
                     balance.withdrawCash(transaction.getAmount());
                     balanceRepository.save(balance);
 
-                    transactionResponse = new TransactionResponse(ID, balance.getUser(), transaction.getAmount(), OK);
-                    httpStatus = HttpStatus.OK;
-                    status = OK;
+                    transactionResponse = new TransactionResponse(PaymentConstants.ID, balance.getUser(), transaction.getAmount(), PaymentConstants.OK);
+                    status = PaymentConstants.OK;
 
                 } else {
-                    httpStatus = HttpStatus.OK;
-                    status = NOT_ENOUGH_FOUNDS;
-                    transactionResponse = new TransactionResponse(ID, balance.getUser(), 0.0, status);
+                    status = PaymentConstants.NOT_ENOUGH_FOUNDS;
+                    transactionResponse = new TransactionResponse(PaymentConstants.ID, balance.getUser(), 0.0, status);
                 }
-
             } else {
 
-                httpStatus = HttpStatus.NOT_FOUND;
-                status = NOT_FOUND;
-                transactionResponse = new TransactionResponse(ID, transaction.getUser(), transaction.getAmount(), NOT_FOUND);
+                status = PaymentConstants.NOT_FOUND;
+                transactionResponse = new TransactionResponse(PaymentConstants.ID, transaction.getUser(), transaction.getAmount(), PaymentConstants.NOT_FOUND);
             }
         } catch (MongoException mongoException) {
-            httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+
             status = mongoException.getMessage();
         }
-        headers.add(IS_TRANSACTION_SUCCESSFUL, status);
+        headers.add(PaymentConstants.IS_TRANSACTION_SUCCESSFUL, status);
 
         return transactionResponse;
     }
