@@ -21,12 +21,12 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
     implementation libs.lombok
     compile libs.springBootActuator
     annotationProcessor libs.lombok
-    compile group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '8.0.2'
-    implementation "org.springframework.boot:spring-boot-starter-security"
+    implementation libs.springBootStartSecurity
+    compile libs.springCloudStarterRabbitmq
+    compile libs.keycloakSpringBoot
 
     testCompile libs.junit
 }

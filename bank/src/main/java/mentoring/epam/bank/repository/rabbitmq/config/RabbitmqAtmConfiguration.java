@@ -1,57 +1,28 @@
 package mentoring.epam.bank.repository.rabbitmq.config;
 
-import mentoring.epam.bank.commons.repository.rabbitmq.RabbitmqQueueNames;
-import mentoring.epam.bank.commons.repository.rabbitmq.RabbitmqRouteNames;
-import org.springframework.amqp.core.Queue;
+import mentoring.epam.bank.commons.repository.rabbitmq.converter.TransactionMessageConverter;
+import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import org.springframework.amqp.core.*;
 
 @Configuration
 public class RabbitmqAtmConfiguration {
 
     @Bean
-    public DirectExchange direct() {
-        return new DirectExchange("transaction2");
+    public TransactionMessageConverter transactionMessageConverter(){
+        return new TransactionMessageConverter();
     }
 
     @Bean
-    public Queue atmToBank() {
-        return new Queue(RabbitmqQueueNames.ATM_TO_BANK.name());
+    public RabbitListenerContainerFactory<SimpleMessageListenerContainer> prefetchTenRabbitListenerContainerFactory(ConnectionFactory rabbitConnectionFactory) {
+        SimpleRabbitListenerContainerFactory factory = new SimpleRabbitListenerContainerFactory();
+        factory.setDefaultRequeueRejected(false);
+
+        return factory;
     }
 
-    @Bean
-    public Queue bankToAtm() {
-        return new Queue(RabbitmqQueueNames.BANK_TO_ATM.name());
-    }
 
-    @Bean
-    public Queue bankToAtmError() {
-        return new Queue(RabbitmqQueueNames.BANK_TO_ATM_ERROR.name());
-    }
-
-    @Bean
-    public Binding bindingDeposit(DirectExchange direct,
-                                  Queue bankToAtm) {
-        return BindingBuilder.bind(bankToAtm)
-                .to(direct)
-                .with(RabbitmqRouteNames.DEPOSIT.name());
-    }
-
-    @Bean
-    public Binding bindingWithdraw(DirectExchange direct,
-                                   Queue bankToAtm) {
-        return BindingBuilder.bind(bankToAtm)
-                .to(direct)
-                .with(RabbitmqRouteNames.WITHDRAW.name());
-    }
-
-    @Bean
-    public Binding bindingError(DirectExchange direct,
-                                Queue bankToAtmError) {
-        return BindingBuilder.bind(bankToAtmError)
-                .to(direct)
-                .with(RabbitmqRouteNames.ERROR.name());
-    }
 }

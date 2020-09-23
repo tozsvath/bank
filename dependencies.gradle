@@ -3,9 +3,14 @@ ext {
     //Spring
     springVersion = '2.2.6.RELEASE'
     springDependencyManagementPlugin = '1.0.9.RELEASE'
+    springKeycloakVersion = '8.0.2'
+    springBootStartSecurityVersion = '2.2.6.RELEASE'
+    springBootStarterRabbit = '3.0.0.RELEASE'
+
 
     //Other
     lombokVersion = '1.18.12'
+    httpClientVersion = '4.3.3'
 
     // Test Libraries
     versionJunit = '4.12'
@@ -15,9 +20,11 @@ ext {
             springBootActuator : "org.springframework.boot:spring-boot-starter-actuator:$springVersion",
             springBootData: "org.springframework.data:spring-data-commons:$springVersion",
             springBootMongo: "org.springframework.boot:spring-boot-starter-data-mongodb:$springVersion",
-
+            keycloakSpringBoot: "org.keycloak:keycloak-spring-boot-starter:$springKeycloakVersion",
+            springBootStartSecurity: "org.springframework.boot:spring-boot-starter-security:$springVersion",
+            springCloudStarterRabbitmq: "org.springframework.cloud:spring-cloud-starter-stream-rabbit:$springBootStarterRabbit",
+            htppClient: "org.apache.httpcomponents:httpclient:$httpClientVersion",
             lombok : "org.projectlombok:lombok:$lombokVersion",
-
             springBootTest : "org.springframework.boot:spring-boot-starter-test:$springVersion",
             junit : "junit:junit:$versionJunit",
 

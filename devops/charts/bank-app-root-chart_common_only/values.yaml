@@ -1,0 +1,38 @@
+rabbitmq:
+  rabbitmq:
+    service:
+      type: ClusterIP
+    username: user
+    password: XAZvBI2Mfb
+
+keycloak:
+  keycloak:
+    service:
+      type: ClusterIP
+    extraArgs: -Dkeycloak.import=/bank-full-users/bank-realm.json
+    username: keycloak
+    password: "kecske123"
+    ingress:
+      enabled: true
+      path: /auth
+      annotations: {
+        kubernetes.io/ingress.class: nginx
+      }
+      # kubernetes.io/ingress.class: nginx
+      # kubernetes.io/tls-acme: "true"
+      hosts:
+        - my-minikube
+  ## Add additional volumes and mounts, e. g. for custom themes
+    extraVolumes: |
+      - name: bank-full-secret
+        secret:
+          secretName: bank-full-secret
+
+    extraVolumeMounts: |
+      - name: bank-full-secret
+        mountPath: "/bank-full-users/"
+        readOnly: true
+=mongodb:
+  mongodb:
+    ingress:
+      enabled: true

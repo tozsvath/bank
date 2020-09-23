@@ -3,13 +3,21 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
 }
-apply from: "../dependencies.gradle"
 
-group 'epam.mentoring'
+group 'org.example'
 version '1.0-SNAPSHOT'
+
+apply from: "../dependencies.gradle"
 
 repositories {
     mavenCentral()
+}
+
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'mentoring.epam.bank.BankApp'
+    }
 }
 
 dependencies {
@@ -19,11 +27,10 @@ dependencies {
     implementation libs.springBootData
     implementation libs.springBootActuator
     implementation libs.lombok
-    implementation "org.springframework.boot:spring-boot-starter-security"
-    compile group: 'org.keycloak', name: 'keycloak-spring-boot-starter', version: '8.0.2'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.2.6.RELEASE'
-    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.3.3'
-    implementation 'org.springframework.boot:spring-boot-starter-amqp'
+    implementation libs.keycloakSpringBoot
+    implementation libs.springBootStartSecurity
+    implementation libs.springCloudStarterRabbitmq
+    implementation libs.htppClient
 
     testImplementation(libs.springBootTest) {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

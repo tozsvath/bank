@@ -2,9 +2,10 @@ package mentoring.epam.atm.controller.rest;
 
 import lombok.extern.slf4j.Slf4j;
 import mentoring.epam.atm.domain.bank.Atm;
-import mentoring.epam.atm.repository.rabbitmq.RabbitmqSenderAtm;
+import mentoring.epam.atm.repository.rabbitmq.TransactionMessaging;
 import mentoring.epam.bank.commons.domain.bank.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.EnableBinding;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,18 +17,21 @@ import java.util.concurrent.TimeoutException;
 
 @Slf4j
 @RestController
+@EnableBinding(TransactionMessaging.class)
 public class PaymentController {
 
     public static final String AUTHORIZATION = "Authorization";
     private Atm atm;
-    private RabbitmqSenderAtm rabbitmqSenderAtm;
+    private TransactionMessaging rabbitmqSenderAtm;
+
+
 
     @Autowired
-    public PaymentController(Atm atm, RabbitmqSenderAtm rabbitmqSenderAtm) {
+    public PaymentController(Atm atm) {
         this.atm = atm;
-        this.rabbitmqSenderAtm = rabbitmqSenderAtm;
     }
 
+    //TODO kell e 3 endpoint
     @PostMapping("/atm/withdraw")
     public HttpStatus withdrawCash(@RequestHeader(AUTHORIZATION) String token, @RequestBody Transaction transaction) throws IOException, TimeoutException {
 

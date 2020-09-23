@@ -3,3 +3,5 @@ build/
 gradle/
 .idea/
 out/
+*.tgz
+./devops/charts/bank-app-root-chart/charts/

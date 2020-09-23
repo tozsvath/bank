@@ -1,0 +1,18 @@
+dependencies:
+- name: keycloak
+  repository: https://codecentric.github.io/helm-charts
+  version: 8.1.0
+- name: mongodb
+  repository: https://charts.bitnami.com/bitnami
+  version: 7.13.0
+- name: rabbitmq
+  repository: https://charts.bitnami.com/bitnami
+  version: 6.25.11
+- name: bank-chart
+  repository: http://localhost:8080/
+  version: 0.1.0
+- name: atm-chart
+  repository: http://localhost:8080/
+  version: 0.1.0
+digest: sha256:aaab811fed014ea0d1b0d0b9e82f70f30553e64584ee1fc8a1611a1f7758193c
+generated: "2020-08-23T18:48:40.040659555+02:00"

@@ -2,51 +2,47 @@ package mentoring.epam.bank.domain.bank.paymentImpl;
 
 import com.mongodb.MongoException;
 import mentoring.epam.bank.commons.domain.bank.Balance;
+import mentoring.epam.bank.commons.domain.bank.PaymentType;
 import mentoring.epam.bank.commons.domain.bank.Transaction;
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
-import mentoring.epam.bank.domain.bank.Payment;
+import mentoring.epam.bank.domain.bank.PaymentMethod;
 import mentoring.epam.bank.domain.bank.paymentImpl.constants.PaymentConstants;
 import mentoring.epam.bank.repository.mongodb.BalanceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.stereotype.Component;
 
-public class Deposit implements Payment {
+import java.util.Optional;
+
+@Component
+public class Deposit implements PaymentMethod {
 
     private BalanceRepository balanceRepository;
-    private Transaction transaction;
 
-    @Autowired
-    public Deposit(BalanceRepository balanceRepository, Transaction transaction) {
+    public Deposit(BalanceRepository balanceRepository) {
         this.balanceRepository = balanceRepository;
-        this.transaction = transaction;
     }
 
-    public TransactionResponse executeTransaction() {
+    @Override
+    public PaymentType getPaymentType() {
+        return PaymentType.DEPOSIT;
+    }
 
-        HttpHeaders headers = new HttpHeaders();
-        String status;
+    public TransactionResponse executeTransactionForPaymentMethod(Transaction transaction) {
+
         TransactionResponse transactionResponse;
 
         try {
-            Balance balance = balanceRepository.findByUser(transaction.getUser());
-            if (isUserExist(balance)) {
-                balance.depositCash(transaction.getAmount());
-            } else {
-                balance = new Balance(transaction.getUser(), transaction.getAmount());
+            Optional<Balance> balance = balanceRepository.findByUser(transaction.getUser());
+
+            if (balance.isPresent()) {
+                balance.get().depositCash(transaction.getAmount());
             }
-            balanceRepository.save(balance);
 
-            transactionResponse = new TransactionResponse(PaymentConstants.ID, transaction.getUser(), balance.getAmount(), PaymentConstants.OK);
-
-            status = PaymentConstants.OK;
+            balanceRepository.save(balance.orElse(new Balance(transaction.getUser(), transaction.getAmount())));
+            transactionResponse = new TransactionResponse(PaymentConstants.ID, transaction.getUser(), balance.get().getAmount(),PaymentConstants.OK,PaymentType.DEPOSIT);
 
         } catch (MongoException mongoException) {
-
-            status = mongoException.getMessage();
-            transactionResponse = new TransactionResponse(PaymentConstants.ID, transaction.getUser(), null, PaymentConstants.ERROR);
+            transactionResponse = new TransactionResponse(PaymentConstants.ID, transaction.getUser(), null, String.format(PaymentConstants.MONGO_ERROR + mongoException.getMessage()),PaymentType.DEPOSIT);
         }
-
-        headers.add(PaymentConstants.IS_TRANSACTION_SUCCESSFUL, status);
 
         return transactionResponse;
     }

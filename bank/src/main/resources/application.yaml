@@ -12,7 +12,17 @@ spring:
     username: user
     port: ${BANK_APP_RABBITMQ_PORT_5672_TCP_PORT:5672}
     password: XAZvBI2Mfb
-    #FIXME
+  cloud:
+    stream:
+      bindings:
+        bankToAtm:
+          destination: bankToAtm
+          group: queue
+        bankToAtmError:
+          destination: bankToAtmError
+          group: queue
+        atmToBank:
+          group: queue
 
 server:
   port: 8085

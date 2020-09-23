@@ -1,39 +1,35 @@
 package mentoring.epam.bank.repository.rabbitmq;
 
 import mentoring.epam.bank.commons.domain.bank.TransactionResponse;
-import org.springframework.amqp.core.DirectExchange;
-import org.springframework.amqp.core.Message;
-import org.springframework.amqp.core.MessageProperties;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.utils.SerializationUtils;
+import mentoring.epam.bank.repository.rabbitmq.config.BankToAtmChannel;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.EnableBinding;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
+@EnableBinding({BankToAtmChannel.class})
 public class RabbitmqSenderBank {
 
-    private RabbitTemplate template;
-
-    private DirectExchange direct;
+    private final MessageChannel messaging;
 
     @Autowired
-    public RabbitmqSenderBank(RabbitTemplate template, DirectExchange direct) {
-        this.template = template;
-        this.direct = direct;
+    public RabbitmqSenderBank(BankToAtmChannel bankToAtmChannel) {
+        this.messaging = bankToAtmChannel.bankToAtm();
     }
 
-    public void send(TransactionResponse transaction, String routeKey) {
+    public void sendWithdraw(TransactionResponse transaction) {
 
-        MessageProperties messageProperties = new MessageProperties();
-        Message message = new Message(getBytes(transaction),messageProperties);
-
-        template.convertAndSend(direct.getName(), routeKey, message);
+        messaging.send(MessageBuilder.withPayload(transaction).build());
     }
 
-    private byte[] getBytes(TransactionResponse transactionResponseResponseEntity) {
-
-        byte[] data = SerializationUtils.serialize(transactionResponseResponseEntity);
-        return data;
+    public void sendDeposit(TransactionResponse transaction) {
+        messaging.send(MessageBuilder.withPayload(transaction).build());
     }
 
+    public void sendError(TransactionResponse transaction) {
+        messaging.send(MessageBuilder.withPayload(transaction).build());
+    }
 }
